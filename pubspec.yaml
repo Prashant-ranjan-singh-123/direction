@@ -1,0 +1,48 @@
+name: direction
+description: "A new Flutter project."
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.10+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.14.0
+  rename: ^3.0.2
+
+flutter_launcher_icons:
+  ios: true
+  android: false
+  image_path: "asset/images/png/ic_launcher-playstore.png"
+  remove_alpha_ios: true
+
+  flutter_lints: ^4.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - asset/images/jpg/
+    - asset/images/png/
+    - asset/images/svg/
+
+  fonts:
+    - family: gilroy_extra_bold
+      fonts:
+        - asset: asset/fonts/gilroy/gilroy_extra_bold.otf
+
+    - family: gilroy_light
+      fonts:
+        - asset: asset/fonts/gilroy/gilroy_light.otf
