@@ -21,13 +21,11 @@ class _BottomNavBarMainState extends State<BottomNavBarMain> {
   List<List<dynamic>> bottomNavBarItems = [
     [Icon(IconlyLight.home), 'Home'],
     [Icon(IconlyLight.wallet), 'Recharge'],
-    [Icon(IconlyLight.profile), 'Profile'],
   ];
 
   List<IconData> activeIcon = [
     IconlyBold.home,
     IconlyBold.wallet,
-    IconlyBold.profile
   ];
 
   Widget build(BuildContext context) {
@@ -35,10 +33,12 @@ class _BottomNavBarMainState extends State<BottomNavBarMain> {
       body: _body_builder(),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: AppColor.secondary,
-        selectedLabelStyle: AppTextStyle.body2().copyWith(fontWeight: FontWeight.w900),
-        unselectedLabelStyle: AppTextStyle.h4().copyWith(fontFamily: AppFonts.gilroy_light),
+        selectedLabelStyle:
+            AppTextStyle.h1(fontSize: 14).copyWith(fontWeight: FontWeight.w900),
+        unselectedLabelStyle:
+            AppTextStyle.h4(fontSize: 12).copyWith(fontFamily: AppFonts.gilroy_light),
         selectedFontSize: 12,
-        unselectedFontSize: 14,
+        unselectedFontSize: 10,
         items: [
           BottomNavigationBarItem(
               icon: bottomNavBarItems[0][0],
@@ -49,22 +49,13 @@ class _BottomNavBarMainState extends State<BottomNavBarMain> {
             label: bottomNavBarItems[1][1],
             activeIcon: Icon(activeIcon[1], color: AppColor.secondary),
           ),
-          BottomNavigationBarItem(
-              icon: bottomNavBarItems[2][0],
-              label: bottomNavBarItems[2][1],
-              activeIcon: Icon(
-                activeIcon[2],
-                color: AppColor.secondary,
-              ),),
         ],
         onTap: (var page) {
           setState(() {
             if (page == 0) {
               _current_selected = 0;
-            } else if (page == 1) {
+            } else{
               _current_selected = 1;
-            } else {
-              _current_selected = 2;
             }
           });
         },
@@ -76,10 +67,8 @@ class _BottomNavBarMainState extends State<BottomNavBarMain> {
   Widget _body_builder() {
     if (_current_selected == 0) {
       return HomePageAfterLogin();
-    } else if (_current_selected == 1) {
+    } else{
       return RechargePageAfterLogin();
-    } else {
-      return ProfilePageAfterLogin();
     }
   }
 }

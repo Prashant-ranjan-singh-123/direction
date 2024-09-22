@@ -42,6 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Widget _portrate() {
     return Scaffold(
+        backgroundColor: Color.fromRGBO(251, 251, 251, 1),
         body: SafeArea(
       bottom: false,
       right: false,
@@ -66,6 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Widget _landscape() {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(251, 251, 251, 1),
         body: SafeArea(
       bottom: false,
       right: false,

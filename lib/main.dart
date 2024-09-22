@@ -1,4 +1,5 @@
 import 'package:direction/screens/splash_screen.dart';
+import 'package:direction/utils/app_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,11 @@ class AppStarter extends StatelessWidget {
       home: SplashScreen(),
       theme: ThemeData(
         splashColor: Colors.transparent,
-        highlightColor: Colors.transparent
+        highlightColor: Colors.transparent,
+        scaffoldBackgroundColor: AppColor.white,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: AppColor.white,
+        )
       ),
       debugShowCheckedModeBanner: false,
     );
