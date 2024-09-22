@@ -36,7 +36,7 @@ class _BottomNavBarMainState extends State<BottomNavBarMain> {
         selectedLabelStyle:
             AppTextStyle.h1(fontSize: 14).copyWith(fontWeight: FontWeight.w900),
         unselectedLabelStyle:
-            AppTextStyle.h4(fontSize: 12).copyWith(fontFamily: AppFonts.gilroy_light),
+            AppTextStyle.h1(fontSize: 12).copyWith(fontFamily: AppFonts.gilroy_light),
         selectedFontSize: 12,
         unselectedFontSize: 10,
         items: [

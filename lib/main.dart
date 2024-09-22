@@ -20,6 +20,10 @@ class AppStarter extends StatelessWidget {
         scaffoldBackgroundColor: AppColor.white,
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: AppColor.white,
+        ),
+        appBarTheme: AppBarTheme(
+          elevation: 0,
+          backgroundColor: AppColor.white
         )
       ),
       debugShowCheckedModeBanner: false,

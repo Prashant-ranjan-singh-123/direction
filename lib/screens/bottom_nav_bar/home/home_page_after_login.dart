@@ -1,3 +1,4 @@
+import 'package:direction/shared/app_bar.dart';
 import 'package:direction/utils/app_color.dart';
 import 'package:direction/utils/text_style.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +12,16 @@ class HomePageAfterLogin extends StatefulWidget {
 }
 
 class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppAppBar.afterLoginAppBar(title: 'Home'),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,

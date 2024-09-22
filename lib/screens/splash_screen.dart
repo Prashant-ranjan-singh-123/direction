@@ -121,7 +121,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget _text() {
     return Text(
       'Get directions for your life problems',
-      style: AppTextStyle.h3().copyWith(
+      style: AppTextStyle.h1().copyWith(
           fontFamily: AppFonts.gilroy_light, fontWeight: FontWeight.w500),
     );
   }
