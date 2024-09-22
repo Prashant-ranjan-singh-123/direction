@@ -8,7 +8,8 @@ class AppAppBar {
       centerTitle: false,
       title: Text(
         title,
-        style: AppTextStyle.body1(fontColor: AppColor.primary, fontSize: 18).copyWith(fontWeight: FontWeight.w900),
+        style: AppTextStyle.h1(fontColor: AppColor.primary, fontSize: 20)
+            .copyWith(fontWeight: FontWeight.w900),
       ),
     );
   }

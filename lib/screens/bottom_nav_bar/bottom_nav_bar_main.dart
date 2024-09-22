@@ -9,7 +9,8 @@ import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 
 class BottomNavBarMain extends StatefulWidget {
-  const BottomNavBarMain({super.key});
+  int current_page;
+  BottomNavBarMain({super.key, this.current_page = 0});
 
   @override
   State<BottomNavBarMain> createState() => _BottomNavBarMainState();
@@ -17,7 +18,7 @@ class BottomNavBarMain extends StatefulWidget {
 
 class _BottomNavBarMainState extends State<BottomNavBarMain> {
   @override
-  int _current_selected = 0;
+  late int _current_selected;
   List<List<dynamic>> bottomNavBarItems = [
     [Icon(IconlyLight.home), 'Home'],
     [Icon(IconlyLight.wallet), 'Recharge'],
@@ -27,6 +28,12 @@ class _BottomNavBarMainState extends State<BottomNavBarMain> {
     IconlyBold.home,
     IconlyBold.wallet,
   ];
+
+  @override
+  void initState() {
+    _current_selected = widget.current_page;
+    super.initState();
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
