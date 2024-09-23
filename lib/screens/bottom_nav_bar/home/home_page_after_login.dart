@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:direction/model/astrologer_model.dart';
 import 'package:direction/services/shared_preference.dart';
 import 'package:direction/shared/app_bar.dart';
@@ -117,16 +118,70 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
       child: ListView.builder(
         itemCount: model.data.length,
         itemBuilder: (context, index) {
-          return Card(
-            color: AppColor.white,
-            elevation: 15,
-            shadowColor: AppColor.primary,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  Image.asset(model.data[index].imageUrl)
-                ],
+          var data = model.data[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Card(
+              color: AppColor.white,
+              elevation: 15,
+              shadowColor: AppColor.primary,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    // Display the image, with a fallback in case the URL is empty
+                    data.imageUrl.isNotEmpty
+                        ? Image.asset(data.imageUrl)
+                        : Container(width: 50, height: 50, color: AppColor.white), // Placeholder if no image
+
+                    SizedBox(width: 10), // Add space between image and text
+
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AutoSizeText(
+                            maxLines: 1,
+                            data.name,
+                            style: AppTextStyle.body1(fontColor: AppColor.black), // Adjust text style as needed
+                          ),
+                          SizedBox(height: 5), // Space between name and expertise
+                          Card(
+                            color: AppColor.secondary_light_green,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 18),
+                              child: Text(data.fee, style: AppTextStyle.h1(fontSize: 14),),
+                            ),
+                          ),
+                          SizedBox(height: 5), // Space between name and expertise
+                          AutoSizeText(
+                            maxLines: 1,
+                            'Expertise: ${data.expertise}',
+                            style: AppTextStyle.body1(fontColor: AppColor.black, fontSize: 6), // Adjust text style as needed
+                          ),
+                          SizedBox(height: 5), // Space before fee
+                          Container(
+                            width: double.infinity,
+                            color: AppColor.black.withOpacity(0.1),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(AppAssets.svg_user_group),
+                                  SizedBox(width: 5,),
+                                  Text(
+                                    '${data.helped} People Helped',
+                                    style: AppTextStyle.body1(fontColor: AppColor.black.withOpacity(0.5), fontSize: 12), // Adjust text style as needed
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );

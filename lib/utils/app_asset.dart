@@ -10,4 +10,5 @@ class AppAssets{
   static String svg_wallet = 'asset/images/svg/wallet.svg';
   static String svg_whatsapp = 'asset/images/svg/whatsapp.svg';
   static String svg_hello = 'asset/images/svg/hi_sign.svg';
+  static String svg_user_group = 'asset/images/svg/user_group.svg';
 }
