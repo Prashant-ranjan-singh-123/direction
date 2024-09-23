@@ -7,6 +7,7 @@ import 'package:direction/utils/app_color.dart';
 import 'package:direction/utils/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:iconly/iconly.dart';
 
 class HomePageAfterLogin extends StatefulWidget {
   const HomePageAfterLogin({super.key});
@@ -127,59 +128,103 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
               shadowColor: AppColor.primary,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Row(
+                child: Column(
                   children: [
-                    // Display the image, with a fallback in case the URL is empty
-                    data.imageUrl.isNotEmpty
-                        ? Image.asset(data.imageUrl)
-                        : Container(width: 50, height: 50, color: AppColor.white), // Placeholder if no image
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Image taking maximum size
+                        data.imageUrl.isNotEmpty
+                            ? FittedBox(
+                          fit: BoxFit.cover,
+                          child: Image.asset(data.imageUrl, fit: BoxFit.fitHeight,),
+                        )
+                            : Container(
+                          color: AppColor.black, // Placeholder if no image
+                        ),
 
-                    SizedBox(width: 10), // Add space between image and text
+                        SizedBox(width: 10), // Space between image and text
 
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AutoSizeText(
-                            maxLines: 1,
-                            data.name,
-                            style: AppTextStyle.body1(fontColor: AppColor.black), // Adjust text style as needed
-                          ),
-                          SizedBox(height: 5), // Space between name and expertise
-                          Card(
-                            color: AppColor.secondary_light_green,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 18),
-                              child: Text(data.fee, style: AppTextStyle.h1(fontSize: 14),),
-                            ),
-                          ),
-                          SizedBox(height: 5), // Space between name and expertise
-                          AutoSizeText(
-                            maxLines: 1,
-                            'Expertise: ${data.expertise}',
-                            style: AppTextStyle.body1(fontColor: AppColor.black, fontSize: 6), // Adjust text style as needed
-                          ),
-                          SizedBox(height: 5), // Space before fee
-                          Container(
-                            width: double.infinity,
-                            color: AppColor.black.withOpacity(0.1),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 5),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(AppAssets.svg_user_group),
-                                  SizedBox(width: 5,),
-                                  Text(
-                                    '${data.helped} People Helped',
-                                    style: AppTextStyle.body1(fontColor: AppColor.black.withOpacity(0.5), fontSize: 12), // Adjust text style as needed
-                                  ),
-                                ],
+                        Expanded(
+                          flex: 2, // Flex to allow the text section to take more space
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AutoSizeText(
+                                data.name,
+                                maxLines: 1,
+                                style: AppTextStyle.body1(fontColor: AppColor.black),
                               ),
-                            ),
+                              SizedBox(height: 5), // Space between name and fee
+                              Card(
+                                color: AppColor.secondary_light_green,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 18),
+                                  child: Text(
+                                    data.fee,
+                                    style: AppTextStyle.h1(fontSize: 14),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5), // Space between fee and expertise
+                              AutoSizeText(
+                                'Expertise: ${data.expertise}',
+                                maxLines: 1,
+                                style: AppTextStyle.body1(fontColor: AppColor.black, fontSize: 12),
+                              ),
+                              SizedBox(height: 5), // Space before helped count
+                              Container(
+                                width: double.infinity,
+                                color: AppColor.black.withOpacity(0.1),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(AppAssets.svg_user_group),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        '${data.helped} People Helped',
+                                        style: AppTextStyle.body1(fontColor: AppColor.black.withOpacity(0.5), fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                    SizedBox(height: 10,),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 40,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColor.secondary,
+                          elevation: 5,
+                          shadowColor: AppColor.secondary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                        ),
+                        onPressed: () {
+                          // Handle recharge logic
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(IconlyBold.call, color: AppColor.white, size: 18,),
+                            SizedBox(width: 10,),
+                            Text(
+                              'Call Now',
+                              style: AppTextStyle.body1(fontColor: AppColor.white, fontSize: 15),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
