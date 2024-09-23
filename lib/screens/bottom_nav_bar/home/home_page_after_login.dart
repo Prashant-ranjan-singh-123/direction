@@ -120,7 +120,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
           return Card(
             child: Row(
               children: [
-
+Text('')
               ],
             ),
           );
