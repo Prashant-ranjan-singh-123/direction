@@ -3,4 +3,5 @@ class AppAssets{
   static String svg_logo = 'asset/images/svg/logo.svg';
   static String svg_wallet = 'asset/images/svg/wallet.svg';
   static String svg_whatsapp = 'asset/images/svg/whatsapp.svg';
+  static String svg_hello = 'asset/images/svg/hi_sign.svg';
 }
