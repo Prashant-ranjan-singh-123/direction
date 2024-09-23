@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconly/iconly.dart';
 
+import '../bottom_nav_bar_main.dart';
+
 class HomePageAfterLogin extends StatefulWidget {
   const HomePageAfterLogin({super.key});
 
@@ -34,6 +36,10 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void _recharge_now(){
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BottomNavBarMain(current_page: 1,)));
   }
 
   @override
@@ -92,9 +98,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: () {
-                      // Handle recharge logic
-                    },
+                    onPressed: _recharge_now,
                     child: Text(
                       'Recharge Now',
                       style: AppTextStyle.body1(fontColor: AppColor.white),
