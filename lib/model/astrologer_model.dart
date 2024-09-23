@@ -1,3 +1,5 @@
+import 'package:direction/utils/app_asset.dart';
+
 class Astrologer {
   String name;
   String fee;
@@ -21,7 +23,7 @@ class AstrologerModel {
       fee: '\$ 5 1/min',
       expertise: 'Marriage Issues',
       helped: '11,000+',
-      imageUrl: '',
+      imageUrl: AppAssets.png_astrologer_1,
     ),
     // Add more unique astrologers as needed
     Astrologer(
@@ -29,7 +31,7 @@ class AstrologerModel {
       fee: '\$ 4 1/min',
       expertise: 'Career Guidance',
       helped: '8,000+',
-      imageUrl: '',
+        imageUrl: AppAssets.png_astrologer_2
     ),
 
     Astrologer(
@@ -37,7 +39,7 @@ class AstrologerModel {
       fee: '\$ 4 1/min',
       expertise: 'Career Guidance',
       helped: '8,000+',
-      imageUrl: '',
+      imageUrl: AppAssets.png_astrologer_3
     ),
 
     Astrologer(
@@ -45,23 +47,7 @@ class AstrologerModel {
       fee: '\$ 4 1/min',
       expertise: 'Career Guidance',
       helped: '8,000+',
-      imageUrl: '',
-    ),
-
-    Astrologer(
-      name: 'Pastor Jane Doe',
-      fee: '\$ 4 1/min',
-      expertise: 'Career Guidance',
-      helped: '8,000+',
-      imageUrl: '',
-    ),
-
-    Astrologer(
-      name: 'Pastor Jane Doe',
-      fee: '\$ 4 1/min',
-      expertise: 'Career Guidance',
-      helped: '8,000+',
-      imageUrl: '',
+      imageUrl: AppAssets.png_astrologer_4
     ),
   ];
 }

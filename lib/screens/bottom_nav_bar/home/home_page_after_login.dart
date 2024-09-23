@@ -118,10 +118,16 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
         itemCount: model.data.length,
         itemBuilder: (context, index) {
           return Card(
-            child: Row(
-              children: [
-Text('asdfgh'),
-              ],
+            color: AppColor.white,
+            elevation: 15,
+            shadowColor: AppColor.primary,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                children: [
+                  Image.asset(model.data[index].imageUrl)
+                ],
+              ),
             ),
           );
         },
