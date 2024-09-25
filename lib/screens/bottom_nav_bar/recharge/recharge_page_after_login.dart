@@ -95,7 +95,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
         child: Center(
             child: Text(
           'Mercy from Tampa has just recharged with \₹50',
-          style: AppTextStyle.recharge_banner(),
+          style: AppTextStyle.body1(fontSize: 15, fontColor: AppColor.white),
         )),
       ),
     );
@@ -113,7 +113,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
             'Your Current Balance is:',
             style: AppTextStyle.recharge_banner(
                     fontColor: AppColor.black, fontSize: 18)
-                .copyWith(fontWeight: FontWeight.w100),
+                .copyWith(fontWeight: FontWeight.w900),
           ),
           SizedBox(
             height: 15,
@@ -136,7 +136,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                     ),
                     Text(
                       '\$ ${_total_balance}',
-                      style: AppTextStyle.recharge_current_banner_text(),
+                      style: AppTextStyle.h1(fontSize: 20, fontColor: AppColor.black),
                     )
                   ],
                 )),
@@ -228,7 +228,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColor.secondary,
-                        elevation: 5,
+                        elevation: 0,
                         shadowColor: AppColor.secondary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -313,8 +313,8 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
       borderRadius: BorderRadius.circular(8), // Match the card's border radius
       child: Card(
         color: AppColor.white, // Card background color
-        elevation: 2, // Elevation for shadow effect
-        shadowColor: AppColor.secondary, // Shadow color
+        elevation: 1, // Elevation for shadow effect
+        shadowColor: AppColor.black.withOpacity(1), // Shadow color
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -329,7 +329,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                 children: [
                   Text(
                     '\$ ${value}',
-                    style: AppTextStyle.recharge_current_banner_text(),
+                    style: AppTextStyle.h1(fontSize: 18, fontColor: AppColor.black),
                   ),
                 ],
               ),
@@ -388,7 +388,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                     ),
                     Text(
                       'Chat Support',
-                      style: AppTextStyle.recharge_banner(fontSize: 16),
+                      style: AppTextStyle.h1(fontSize: 16, fontColor: AppColor.white),
                     ),
                   ],
                 )),

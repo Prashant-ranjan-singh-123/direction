@@ -24,14 +24,14 @@ class AppTextStyle {
         fontSize: fontSize,
         fontWeight: FontWeight.w100,
         color: fontColor,
-        fontFamily: AppFonts.gilroy_extra_bold);
+        fontFamily: AppFonts.gilroy_light);
   }
 
   static TextStyle recharge_current_banner_text() {
     return TextStyle(
         fontSize: 18,
-        fontWeight: FontWeight.w100,
+        fontWeight: FontWeight.w900,
         color: AppColor.font_black,
-        fontFamily: AppFonts.gilroy_extra_bold);
+        fontFamily: AppFonts.gilroy_light);
   }
 }

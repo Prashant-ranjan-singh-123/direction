@@ -84,7 +84,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                 SizedBox(width: 15),
                 Text(
                   '\$ ${balance}',
-                  style: AppTextStyle.recharge_current_banner_text(),
+                  style: AppTextStyle.h1(),
                 ),
                 Spacer(),
                 SizedBox(
@@ -128,7 +128,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Card(
               color: AppColor.white,
-              elevation: 15,
+              elevation: 3,
               shadowColor: AppColor.primary,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -245,7 +245,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: AppColor.secondary,
-                                    elevation: 5,
+                                    elevation: 0,
                                     shadowColor: AppColor.secondary,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(7),
