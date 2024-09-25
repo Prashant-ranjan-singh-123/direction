@@ -146,7 +146,6 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                             data.imageUrl,
                             fit: BoxFit.cover, // Ensures the image covers the box
                           )
-
                               : Container(
                             color: AppColor.black, // Placeholder if no image
                           ),
