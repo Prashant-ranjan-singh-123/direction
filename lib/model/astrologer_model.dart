@@ -49,6 +49,14 @@ class AstrologerModel {
       helped: '8,000+',
       imageUrl: AppAssets.png_astrologer_4
     ),
+
+    Astrologer(
+        name: 'Pastor Jane Doe',
+        fee: '\$ 4 1/min',
+        expertise: 'Career Guidance',
+        helped: '8,000+',
+        imageUrl: AppAssets.png_astrologer_4
+    ),
   ];
 }
 
