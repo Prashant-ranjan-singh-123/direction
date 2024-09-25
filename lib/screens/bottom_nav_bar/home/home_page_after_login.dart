@@ -151,7 +151,6 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                           ),
                         ),
                         SizedBox(width: 10), // Space between image and text
-
                         Expanded(
                           flex: 2, // Flex to allow the text section to take more space
                           child: Column(
