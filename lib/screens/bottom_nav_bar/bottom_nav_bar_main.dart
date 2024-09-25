@@ -1,14 +1,10 @@
 import 'package:direction/screens/bottom_nav_bar/home/home_page_after_login.dart';
-import 'package:direction/screens/bottom_nav_bar/profile/profile_page_after_login.dart';
 import 'package:direction/screens/bottom_nav_bar/recharge/recharge_page_after_login.dart';
 import 'package:direction/utils/app_asset.dart';
 import 'package:direction/utils/app_color.dart';
-import 'package:direction/utils/app_fonts.dart';
 import 'package:direction/utils/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:iconly/iconly.dart';
-import 'package:iconsax/iconsax.dart';
 
 class BottomNavBarMain extends StatefulWidget {
   int current_page;
