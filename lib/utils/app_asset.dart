@@ -12,4 +12,9 @@ class AppAssets{
   static String svg_whatsapp = 'asset/images/svg/whatsapp.svg';
   static String svg_hello = 'asset/images/svg/hi_sign.svg';
   static String svg_user_group = 'asset/images/svg/user_group.svg';
+
+  static String svg_home_active = 'asset/images/svg/home_active.svg';
+  static String svg_home_inactive = 'asset/images/svg/home_inactive.svg';
+  static String svg_recharge_active = 'asset/images/svg/recharge_active.svg';
+  static String svg_recharge_inactive = 'asset/images/svg/recharge_inactive.svg';
 }

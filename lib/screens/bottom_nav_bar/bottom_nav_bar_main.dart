@@ -1,10 +1,12 @@
 import 'package:direction/screens/bottom_nav_bar/home/home_page_after_login.dart';
 import 'package:direction/screens/bottom_nav_bar/profile/profile_page_after_login.dart';
 import 'package:direction/screens/bottom_nav_bar/recharge/recharge_page_after_login.dart';
+import 'package:direction/utils/app_asset.dart';
 import 'package:direction/utils/app_color.dart';
 import 'package:direction/utils/app_fonts.dart';
 import 'package:direction/utils/text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -20,13 +22,13 @@ class _BottomNavBarMainState extends State<BottomNavBarMain> {
   @override
   late int _current_selected;
   List<List<dynamic>> bottomNavBarItems = [
-    [Icon(IconlyLight.home), 'Home'],
-    [Icon(IconlyLight.wallet), 'Recharge'],
+    [SvgPicture.asset(AppAssets.svg_home_inactive), 'Home'],
+    [SvgPicture.asset(AppAssets.svg_recharge_inactive), 'Recharge'],
   ];
 
-  List<IconData> activeIcon = [
-    IconlyBold.home,
-    IconlyBold.wallet,
+  List<dynamic> activeIcon = [
+    SvgPicture.asset(AppAssets.svg_home_active),
+    SvgPicture.asset(AppAssets.svg_recharge_active),
   ];
 
   @override
@@ -41,20 +43,20 @@ class _BottomNavBarMainState extends State<BottomNavBarMain> {
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: AppColor.secondary,
         selectedLabelStyle:
-            AppTextStyle.h1(fontSize: 14).copyWith(fontWeight: FontWeight.w900),
+            AppTextStyle.body1(fontSize: 14).copyWith(fontWeight: FontWeight.w900),
         unselectedLabelStyle:
-            AppTextStyle.h1(fontSize: 12).copyWith(fontFamily: AppFonts.gilroy_light),
+        AppTextStyle.body1(fontSize: 14).copyWith(fontWeight: FontWeight.w900),
         selectedFontSize: 12,
         unselectedFontSize: 10,
         items: [
           BottomNavigationBarItem(
               icon: bottomNavBarItems[0][0],
               label: bottomNavBarItems[0][1],
-              activeIcon: Icon(activeIcon[0], color: AppColor.secondary)),
+              activeIcon: activeIcon[0]),
           BottomNavigationBarItem(
             icon: bottomNavBarItems[1][0],
             label: bottomNavBarItems[1][1],
-            activeIcon: Icon(activeIcon[1], color: AppColor.secondary),
+            activeIcon: activeIcon[1],
           ),
         ],
         onTap: (var page) {
