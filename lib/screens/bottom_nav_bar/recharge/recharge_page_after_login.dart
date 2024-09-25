@@ -230,12 +230,20 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                       shape: RoundedRectangleBorder()),
                   onPressed: () {
                     FocusScope.of(context).unfocus();
-                    try {
-                      int amount = int.parse(_amount.text);
-                      _payment(money: amount);
-                    } catch (e) {
-                      print('Invalid amount: ${e.toString()}');
+
+                    // Check if the amount is a valid positive integer
+                    if (_amount.text.isNotEmpty && int.tryParse(_amount.text) != null && int.parse(_amount.text) > 0) {
+                      try {
+                        int amount = int.parse(_amount.text);
+                        _payment(money: amount);
+                      } catch (e) {
+                        print('Invalid amount: ${e.toString()}');
+                      }
+                    } else {
+                      // Optionally, you could show an error message here
+                      print('Please enter a valid amount greater than 0');
                     }
+
                     _amount.clear();
                   },
                   child: Text(

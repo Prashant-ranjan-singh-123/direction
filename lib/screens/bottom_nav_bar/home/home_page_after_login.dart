@@ -138,15 +138,19 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Image taking maximum size
-                        data.imageUrl.isNotEmpty
-                            ? FittedBox(
-                          fit: BoxFit.cover,
-                          child: Image.asset(data.imageUrl, fit: BoxFit.fitHeight,),
-                        )
-                            : Container(
-                          color: AppColor.black, // Placeholder if no image
-                        ),
+                        Container(
+                          width: 120, // Set a fixed width for the image
+                          height: 120, // Set a fixed height for the image
+                          child: data.imageUrl.isNotEmpty
+                              ? Image.asset(
+                            data.imageUrl,
+                            fit: BoxFit.cover, // Ensures the image covers the box
+                          )
 
+                              : Container(
+                            color: AppColor.black, // Placeholder if no image
+                          ),
+                        ),
                         SizedBox(width: 10), // Space between image and text
 
                         Expanded(
@@ -200,7 +204,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(height: 15,),
                     SizedBox(
                       width: double.infinity,
                       height: 40,
