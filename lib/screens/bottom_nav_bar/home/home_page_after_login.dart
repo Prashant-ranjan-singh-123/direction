@@ -45,7 +45,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppAppBar.afterLoginAppBar(title: 'Hello Sagar!', is_high_icon: true),
+      appBar: AppAppBar.afterLoginAppBar(title: 'Hello', is_high_icon: true),
       body: _isLoading ? _loading() : _buildUi(),
     );
   }
@@ -101,7 +101,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                     onPressed: _recharge_now,
                     child: Text(
                       'Recharge Now',
-                      style: AppTextStyle.body1(fontColor: AppColor.white),
+                      style: AppTextStyle.body1(fontColor: AppColor.white, fontSize: 14),
                     ),
                   ),
                 ),
