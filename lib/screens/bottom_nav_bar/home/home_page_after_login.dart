@@ -83,7 +83,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                 SvgPicture.asset(AppAssets.svg_wallet),
                 SizedBox(width: 15),
                 Text(
-                  '₹ ${balance}',
+                  '\$ ${balance}',
                   style: AppTextStyle.recharge_current_banner_text(),
                 ),
                 Spacer(),
@@ -138,17 +138,25 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Image taking maximum size
-                        Container(
-                          width: 120, // Set a fixed width for the image
-                          height: 120, // Set a fixed height for the image
-                          child: data.imageUrl.isNotEmpty
-                              ? Image.asset(
-                            data.imageUrl,
-                            fit: BoxFit.cover, // Ensures the image covers the box
-                          )
-                              : Container(
-                            color: AppColor.black, // Placeholder if no image
-                          ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center, // Center vertically
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: Container(
+                                width: 170, // Set a fixed width for the image
+                                height: 170, // Set a fixed height for the image
+                                child: data.imageUrl.isNotEmpty
+                                    ? Image.asset(
+                                  data.imageUrl,
+                                  fit: BoxFit.cover, // Ensures the image covers the box
+                                )
+                                    : Container(
+                                  color: AppColor.black, // Placeholder if no image
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(width: 10), // Space between image and text
                         Expanded(
@@ -166,9 +174,43 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                 color: AppColor.secondary_light_green,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 18),
-                                  child: Text(
-                                    data.fee,
-                                    style: AppTextStyle.h1(fontSize: 14),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          '\$',
+                                          style: AppTextStyle.h1(fontSize: 14),
+                                          overflow: TextOverflow.ellipsis, // This will add an ellipsis if the text overflows
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            Text(
+                                              data.highFee,
+                                              style: AppTextStyle.h1(fontSize: 14),
+                                            ),
+                                            Positioned(
+                                              top: 10,
+                                              child: Container(
+                                                width: data.highFee.length * 18, // Adjust line width based on text length
+                                                height: 1, // Line thickness
+                                                color: Colors.black, // Line color
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          ' ${data.fee}',
+                                          style: AppTextStyle.h1(fontSize: 14),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -197,40 +239,39 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                 ),
                               ),
                               SizedBox(height: 10),
+                              SizedBox(
+                                width: double.infinity,
+                                height: 40,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColor.secondary,
+                                    elevation: 5,
+                                    shadowColor: AppColor.secondary,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(7),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    // Handle recharge logic
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(IconlyBold.call, color: AppColor.white, size: 18),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        'Call Now',
+                                        style: AppTextStyle.body1(fontColor: AppColor.white, fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 15,),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 40,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.secondary,
-                          elevation: 5,
-                          shadowColor: AppColor.secondary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7),
-                          ),
-                        ),
-                        onPressed: () {
-                          // Handle recharge logic
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(IconlyBold.call, color: AppColor.white, size: 18,),
-                            SizedBox(width: 10,),
-                            Text(
-                              'Call Now',
-                              style: AppTextStyle.body1(fontColor: AppColor.white, fontSize: 15),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),

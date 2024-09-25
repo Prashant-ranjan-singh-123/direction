@@ -59,7 +59,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppAppBar.afterLoginAppBar(title: 'Recharge'),
+      appBar: AppAppBar.afterLoginAppBar(title: 'Recharge Now', isPrivacyPolicy: true),
       body: _loading
           ? Center(
               child: CircularProgressIndicator(
@@ -68,23 +68,19 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
             )
           : SizedBox(
               width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
-                  _top_banner(),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _your_current_balance(),
-                          _recharge_with_following_plan(),
-                          _build_chat_support()
-                        ],
-                      ),
-                    ),
+              child: Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _top_banner(),
+                      _your_current_balance(),
+                      _recharge_with_following_plan(),
+                      _build_chat_support()
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
     );
@@ -139,7 +135,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                       width: 15,
                     ),
                     Text(
-                      '₹ ${_total_balance}',
+                      '\$ ${_total_balance}',
                       style: AppTextStyle.recharge_current_banner_text(),
                     )
                   ],
@@ -187,72 +183,84 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
           SizedBox(
             height: 15,
           ),
-          Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: 50,
-                  child: TextField(
-                    keyboardType: TextInputType.number,
-                    controller: _amount,
-                    decoration: InputDecoration(
-                        // prefixIcon: , // Leading icon
-                        border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: AppColor.secondary_light),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColor.secondary),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.black), // Border when focused
-                        ),
-                        // hintText: 'Enter any amount', // Placeholder text
-                        label: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: SvgPicture.asset(AppAssets.svg_wallet),
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColor.black.withOpacity(0.2)),
+              borderRadius: BorderRadius.circular(10)
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 50,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        controller: _amount,
+                        decoration: InputDecoration(
+                            // prefixIcon: , // Leading icon
+                            border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: AppColor.white),
                             ),
-                            Text('Enter any amount')
-                          ],
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColor.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.white), // Border when focused
+                            ),
+                            // hintText: 'Enter any amount', // Placeholder text
+                            label: Row(
+                              children: [
+                                Text('Enter any amount', style: AppTextStyle.body1(fontSize: 14, fontColor: AppColor.black),),
+                                Text(' (Min: \$10)', style: AppTextStyle.body1(fontSize: 14, fontColor: AppColor.black.withOpacity(0.4)),),
+                              ],
+                            ),
+                            // hintText: 'Ex: 52'
                         ),
-                        hintText: 'Ex: 52'),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 48,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.secondary_light,
-                      shape: RoundedRectangleBorder()),
-                  onPressed: () {
-                    FocusScope.of(context).unfocus();
+                  SizedBox(
+                    height: 48,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColor.secondary,
+                        elevation: 5,
+                        shadowColor: AppColor.secondary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
 
-                    // Check if the amount is a valid positive integer
-                    if (_amount.text.isNotEmpty && int.tryParse(_amount.text) != null && int.parse(_amount.text) > 0) {
-                      try {
-                        int amount = int.parse(_amount.text);
-                        _payment(money: amount);
-                      } catch (e) {
-                        print('Invalid amount: ${e.toString()}');
-                      }
-                    } else {
-                      // Optionally, you could show an error message here
-                      print('Please enter a valid amount greater than 0');
-                    }
+                        // Check if the amount is a valid positive integer
+                        if (_amount.text.isNotEmpty && int.tryParse(_amount.text) != null && int.parse(_amount.text) > 0) {
+                          try {
+                            int amount = int.parse(_amount.text);
+                            _payment(money: amount);
+                          } catch (e) {
+                            print('Invalid amount: ${e.toString()}');
+                          }
+                        } else {
+                          // Optionally, you could show an error message here
+                          print('Please enter a valid amount greater than 0');
+                        }
 
-                    _amount.clear();
-                  },
-                  child: Text(
-                    'Recharge',
-                    style: AppTextStyle.recharge_current_banner_text(),
+                        _amount.clear();
+                      },
+                      child: Text(
+                        'Recharge',
+                        style: AppTextStyle.body1(fontColor: AppColor.white, fontSize: 14),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
           SizedBox(
             height: 15,
@@ -320,7 +328,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '₹ ${value}',
+                    '\$ ${value}',
                     style: AppTextStyle.recharge_current_banner_text(),
                   ),
                 ],
