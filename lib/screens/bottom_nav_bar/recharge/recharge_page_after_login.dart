@@ -62,27 +62,22 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
       appBar: AppAppBar.afterLoginAppBar(title: 'Recharge Now', isPrivacyPolicy: true),
       body: _loading
           ? Center(
-              child: CircularProgressIndicator(
-                color: AppColor.secondary,
-              ),
-            )
-          : SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _top_banner(),
-                      _your_current_balance(),
-                      _recharge_with_following_plan(),
-                      _build_chat_support()
-                    ],
-                  ),
-                ),
-              ),
-            ),
+        child: CircularProgressIndicator(
+          color: AppColor.secondary,
+        ),
+      )
+          : SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _top_banner(),
+            _your_current_balance(),
+            _recharge_with_following_plan(),
+            _build_chat_support()
+          ],
+        ),
+      ),
     );
   }
 
@@ -213,9 +208,10 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                             ),
                             // hintText: 'Enter any amount', // Placeholder text
                             label: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text('Enter any amount', style: AppTextStyle.body1(fontSize: 14, fontColor: AppColor.black),),
-                                Text(' (Min: \$10)', style: AppTextStyle.body1(fontSize: 14, fontColor: AppColor.black.withOpacity(0.4)),),
+                                Text('Enter any amount', style: AppTextStyle.body1(fontSize: 12, fontColor: AppColor.black),),
+                                Text(' (Min: \$10)', style: AppTextStyle.body1(fontSize: 12, fontColor: AppColor.black.withOpacity(0.4)),),
                               ],
                             ),
                             // hintText: 'Ex: 52'
@@ -405,7 +401,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
     var options = {
       'key': 'rzp_test_1DP5mmOlF5G5ag',
       'amount': money * 100,
-      'currency': 'INR', // Specify the currency
+      'currency': 'USD', // Specify the currency
       'name': 'Direction',
       'description': 'Recharge Plan Activation',
       'prefill': {

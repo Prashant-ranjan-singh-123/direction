@@ -101,7 +101,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                     onPressed: _recharge_now,
                     child: Text(
                       'Recharge Now',
-                      style: AppTextStyle.body1(fontColor: AppColor.white, fontSize: 14),
+                      style: AppTextStyle.body1(fontColor: AppColor.white, fontSize: 12),
                     ),
                   ),
                 ),
@@ -167,6 +167,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                               AutoSizeText(
                                 data.name,
                                 maxLines: 1,
+                                minFontSize: 4,
                                 style: AppTextStyle.body1(fontColor: AppColor.black),
                               ),
                               SizedBox(height: 5), // Space between name and fee
@@ -177,38 +178,36 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Flexible(
-                                        child: Text(
-                                          '\$',
-                                          style: AppTextStyle.h1(fontSize: 14),
-                                          overflow: TextOverflow.ellipsis, // This will add an ellipsis if the text overflows
-                                        ),
+                                      AutoSizeText(
+                                        '\$',
+                                        minFontSize: 4,
+                                        maxLines: 1,
+                                        style: AppTextStyle.h1(fontSize: 14),
+                                        overflow: TextOverflow.ellipsis, // This will add an ellipsis if the text overflows
                                       ),
-                                      Flexible(
-                                        child: Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            Text(
-                                              data.highFee,
-                                              style: AppTextStyle.h1(fontSize: 14),
+                                      Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Text(
+                                            data.highFee,
+                                            style: AppTextStyle.h1(fontSize: 14),
+                                          ),
+                                          Positioned(
+                                            top: 10,
+                                            child: Container(
+                                              width: data.highFee.length * 18, // Adjust line width based on text length
+                                              height: 1, // Line thickness
+                                              color: Colors.black, // Line color
                                             ),
-                                            Positioned(
-                                              top: 10,
-                                              child: Container(
-                                                width: data.highFee.length * 18, // Adjust line width based on text length
-                                                height: 1, // Line thickness
-                                                color: Colors.black, // Line color
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                      Flexible(
-                                        child: Text(
-                                          ' ${data.fee}',
-                                          style: AppTextStyle.h1(fontSize: 14),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
+                                      AutoSizeText(
+                                        ' ${data.fee}',
+                                        minFontSize: 4,
+                                        maxLines: 1,
+                                        style: AppTextStyle.h1(fontSize: 14),
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
                                   ),
@@ -218,6 +217,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                               AutoSizeText(
                                 'Expertise: ${data.expertise}',
                                 maxLines: 1,
+                                  minFontSize: 4,
                                 style: AppTextStyle.body1(fontColor: AppColor.black, fontSize: 12),
                               ),
                               SizedBox(height: 5), // Space before helped count
@@ -230,9 +230,13 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                     children: [
                                       SvgPicture.asset(AppAssets.svg_user_group),
                                       SizedBox(width: 5),
-                                      Text(
-                                        '${data.helped} People Helped',
-                                        style: AppTextStyle.body1(fontColor: AppColor.black.withOpacity(0.5), fontSize: 12),
+                                      Expanded(
+                                        child: AutoSizeText(
+                                          '${data.helped} People Helped',
+                                          maxLines: 1,
+                                          minFontSize: 4,
+                                          style: AppTextStyle.body1(fontColor: AppColor.black.withOpacity(0.5), fontSize: 12),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -259,8 +263,10 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                     children: [
                                       Icon(IconlyBold.call, color: AppColor.white, size: 18),
                                       SizedBox(width: 10),
-                                      Text(
+                                      AutoSizeText(
                                         'Call Now',
+                                        maxLines: 2,
+                                        minFontSize: 6,
                                         style: AppTextStyle.body1(fontColor: AppColor.white, fontSize: 15),
                                       ),
                                     ],
