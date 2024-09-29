@@ -17,4 +17,7 @@ class AppAssets{
   static String svg_home_inactive = 'asset/images/svg/home_inactive.svg';
   static String svg_recharge_active = 'asset/images/svg/recharge_active.svg';
   static String svg_recharge_inactive = 'asset/images/svg/recharge_inactive.svg';
+
+
+  static String svg_hamberger = 'asset/images/svg/hamberger_menu.svg';
 }

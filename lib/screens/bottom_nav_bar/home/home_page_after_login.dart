@@ -39,7 +39,10 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
   }
 
   void _recharge_now(){
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BottomNavBarMain(current_page: 1,)));
+    setState(() {
+
+    });
+    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BottomNavBarMain(current_page: 1,)));
   }
 
   @override
@@ -83,7 +86,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                 SvgPicture.asset(AppAssets.svg_wallet),
                 SizedBox(width: 15),
                 Text(
-                  '\$ ${balance}',
+                  '₹ ${balance}',
                   style: AppTextStyle.h1(),
                 ),
                 Spacer(),
@@ -144,7 +147,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(5),
                               child: Container(
-                                width: 170, // Set a fixed width for the image
+                                width: MediaQuery.of(context).size.width*0.35, // Set a fixed width for the image
                                 height: 170, // Set a fixed height for the image
                                 child: data.imageUrl.isNotEmpty
                                     ? Image.asset(
@@ -179,7 +182,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       AutoSizeText(
-                                        '\$',
+                                        '₹',
                                         minFontSize: 4,
                                         maxLines: 1,
                                         style: AppTextStyle.h1(fontSize: 14),

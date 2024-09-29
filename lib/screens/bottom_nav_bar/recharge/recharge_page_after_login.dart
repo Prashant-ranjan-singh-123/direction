@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconly/iconly.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+import '../../../services/inn_app_purchase/inn_app_purchase.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/text_style.dart';
 import '../bottom_nav_bar_main.dart';
@@ -71,7 +72,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _top_banner(),
+            // _top_banner(),
             _your_current_balance(),
             _recharge_with_following_plan(),
             _build_chat_support()
@@ -130,7 +131,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                       width: 15,
                     ),
                     Text(
-                      '\$ ${_total_balance}',
+                      '₹ ${_total_balance}',
                       style: AppTextStyle.h1(fontSize: 20, fontColor: AppColor.black),
                     )
                   ],
@@ -210,11 +211,22 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                             label: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text('Enter any amount', style: AppTextStyle.body1(fontSize: 12, fontColor: AppColor.black),),
-                                Text(' (Min: \$10)', style: AppTextStyle.body1(fontSize: 12, fontColor: AppColor.black.withOpacity(0.4)),),
+                                Flexible(
+                                  child: Text(
+                                    'Enter any amount',
+                                    style: AppTextStyle.body1(fontSize: 12, fontColor: AppColor.black),
+                                    overflow: TextOverflow.ellipsis, // This adds the ellipsis
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    ' (Min: \$10)',
+                                    style: AppTextStyle.body1(fontSize: 12, fontColor: AppColor.black.withOpacity(0.4)),
+                                    overflow: TextOverflow.ellipsis, // This adds the ellipsis
+                                  ),
+                                ),
                               ],
-                            ),
-                            // hintText: 'Ex: 52'
+                            ), // hintText: 'Ex: 52'
                         ),
                       ),
                     ),
@@ -274,35 +286,44 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
 
   Widget _buildRechargeButton({required int index}) {
     int value;
+    String productId;
     String discount = '10% Extra Talktime';
 
     switch (index) {
       case 0:
-        value = 10;
+        value = 100;
+        productId = 'recharge_100';
         break;
       case 1:
-        value = 15;
+        value = 150;
+        productId = 'recharge_150';
         break;
       case 2:
-        value = 20;
+        value = 200;
+        productId = 'recharge_200';
         break;
       case 3:
-        value = 30;
+        value = 250;
+        productId = 'recharge_250';
         break;
       case 4:
-        value = 50;
+        value = 500;
+        productId = 'recharge_500';
         break;
       case 5:
-        value = 100;
+        value = 800;
+        productId = 'recharge_800';
         break;
       default:
         value = 100;
+        productId = 'recharge_100';
         break;
     }
 
     return InkWell(
       onTap: () {
-        _payment(money: value);
+        InAppPurchaseHandler(context: context).makePurchase(productId);
+        // _payment(money: value);
       },
       splashColor:
           AppColor.secondary.withOpacity(0.5), // Color of the ripple effect
@@ -324,7 +345,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '\$ ${value}',
+                    '₹ ${value}',
                     style: AppTextStyle.h1(fontSize: 18, fontColor: AppColor.black),
                   ),
                 ],
@@ -369,7 +390,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                 onPressed: () async {
                   await AppOpener.launchAppUsingUrl(
                       link:
-                          'https://wa.me/+917993478539?text=Hello%20i%20am%20Direction%20support%20team,%20i%20was%20getting%20some%20issue%20regarding');
+                          'https://wa.me/+917993478539?text=Hey,%20I%20downloaded%20direction%20-%20I%20am%20having%20a%20problem');
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: AppColor.secondary,
@@ -399,9 +420,9 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
 
   void _payment({required int money}) {
     var options = {
-      'key': 'rzp_test_1DP5mmOlF5G5ag',
+      'key': 'rzp_live_d5McFTkC2w2nZd',
       'amount': money * 100,
-      'currency': 'USD', // Specify the currency
+      'currency': 'INR', // Specify the currency
       'name': 'Direction',
       'description': 'Recharge Plan Activation',
       'prefill': {
