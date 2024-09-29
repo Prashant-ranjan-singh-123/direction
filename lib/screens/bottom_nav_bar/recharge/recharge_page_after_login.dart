@@ -1,4 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:direction/services/inn_app_purchase/complete_inn_app_purchase.dart';
+import 'package:direction/services/inn_app_purchase/fail_inn_app_purchase.dart';
 import 'package:direction/services/other_app_opener.dart';
 import 'package:direction/services/razorpay.dart';
 import 'package:direction/services/shared_preference.dart';
@@ -322,7 +324,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
 
     return InkWell(
       onTap: () {
-        InAppPurchaseHandler(context: context).makePurchase(productId);
+        InAppPurchaseHandler(context: context).makePurchase(productId, value);
         // _payment(money: value);
       },
       splashColor:
@@ -445,9 +447,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
       // Reset the transaction amount
       _pay_transiction = 0;
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => BottomNavBarMain(
-                current_page: 1,
-              )));
+          builder: (context) => CompleteScreen(amount_to_save: null,)));
       // Log the payment success
       print("Payment successful: ${response.paymentId}");
     } else {
@@ -456,7 +456,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    // Handle payment error here
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => FailScreen()));
     print("Payment error: ${response.code} - ${response.message}");
   }
 

@@ -20,4 +20,7 @@ class AppAssets{
 
 
   static String svg_hamberger = 'asset/images/svg/hamberger_menu.svg';
+  static String svg_loading = 'asset/images/svg/loading.svg';
+  static String svg_error = 'asset/images/svg/error.svg';
+  static String svg_success = 'asset/images/svg/payment_success.svg';
 }

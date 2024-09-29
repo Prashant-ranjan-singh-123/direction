@@ -39,10 +39,10 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
   }
 
   void _recharge_now(){
-    setState(() {
-
-    });
-    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BottomNavBarMain(current_page: 1,)));
+    // setState(() {
+    //
+    // });
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BottomNavBarMain(current_page: 1,)));
   }
 
   @override
