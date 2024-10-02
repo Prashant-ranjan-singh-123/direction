@@ -11,10 +11,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconly/iconly.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-import '../../../services/inn_app_purchase/inn_app_purchase.dart';
-import '../../../utils/app_color.dart';
-import '../../../utils/text_style.dart';
-import '../bottom_nav_bar_main.dart';
+import '../../../../services/inn_app_purchase/inn_app_purchase.dart';
+import '../../../../services/internet/no_internet_checker.dart';
+import '../../../../utils/app_color.dart';
+import '../../../../utils/text_style.dart';
+import '../../bottom_nav_bar_main.dart';
 
 class RechargePageAfterLogin extends StatefulWidget {
   const RechargePageAfterLogin({super.key});
@@ -28,11 +29,15 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
   bool _loading = true;
   int _total_balance = 0;
   int? _pay_transiction;
+  late bool _is_india;
   late TextEditingController _amount;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _loading = true;
+    });
     _amount = TextEditingController();
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -42,10 +47,20 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
   }
 
   Future<void> _set_current_balance() async {
-    setState(() {
-      _loading = true;
-    });
-    _total_balance = await SharedPreferenceLogic.getCounter();
+
+    if ('IN' == await SharedPreferenceLogic.getCountryCode()) {
+      _is_india = true;
+    } else {
+      _is_india = false;
+    }
+
+    // _is_india = false;
+
+    if(_is_india){
+      _total_balance = await SharedPreferenceLogic.getCounter(isIn: true);
+    }else{
+      _total_balance = await SharedPreferenceLogic.getCounter(isIn: false);
+    }
     print("Current balance set to: $_total_balance");
     setState(() {
       _loading = false;
@@ -62,25 +77,26 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppAppBar.afterLoginAppBar(title: 'Recharge Now', isPrivacyPolicy: true),
+      appBar: AppAppBar.afterLoginAppBar(
+          title: 'Recharge Now', isPrivacyPolicy: true),
       body: _loading
           ? Center(
-        child: CircularProgressIndicator(
-          color: AppColor.secondary,
-        ),
-      )
+              child: CircularProgressIndicator(
+                color: AppColor.secondary,
+              ),
+            )
           : SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // _top_banner(),
-            _your_current_balance(),
-            _recharge_with_following_plan(),
-            _build_chat_support()
-          ],
-        ),
-      ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // _top_banner(),
+                  _your_current_balance(),
+                  _recharge_with_following_plan(),
+                  _build_chat_support()
+                ],
+              ),
+            ),
     );
   }
 
@@ -133,8 +149,9 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                       width: 15,
                     ),
                     Text(
-                      '₹ ${_total_balance}',
-                      style: AppTextStyle.h1(fontSize: 20, fontColor: AppColor.black),
+                      _is_india? '₹ ${_total_balance}': '\$ ${_total_balance}',
+                      style: AppTextStyle.h1(
+                          fontSize: 20, fontColor: AppColor.black),
                     )
                   ],
                 )),
@@ -174,113 +191,127 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                 List.generate(6, (index) => _buildRechargeButton(index: index)),
           ),
           SizedBox(height: 15),
-          Text(
-            'Or',
-            style: AppTextStyle.recharge_current_banner_text(),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: AppColor.black.withOpacity(0.2)),
-              borderRadius: BorderRadius.circular(10)
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 50,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        controller: _amount,
-                        decoration: InputDecoration(
-                            // prefixIcon: , // Leading icon
-                            border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: AppColor.white),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: AppColor.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.white), // Border when focused
-                            ),
-                            // hintText: 'Enter any amount', // Placeholder text
-                            label: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    'Enter any amount',
-                                    style: AppTextStyle.body1(fontSize: 12, fontColor: AppColor.black),
-                                    overflow: TextOverflow.ellipsis, // This adds the ellipsis
-                                  ),
+          Visibility(
+            visible: _is_india,
+            child: Column(
+              children: [
+                Text(
+                  'Or',
+                  style: AppTextStyle.recharge_current_banner_text(),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: AppColor.black.withOpacity(0.2)),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: 50,
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              controller: _amount,
+                              decoration: InputDecoration(
+                                // prefixIcon: , // Leading icon
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: AppColor.white),
                                 ),
-                                Flexible(
-                                  child: Text(
-                                    ' (Min: \$10)',
-                                    style: AppTextStyle.body1(fontSize: 12, fontColor: AppColor.black.withOpacity(0.4)),
-                                    overflow: TextOverflow.ellipsis, // This adds the ellipsis
-                                  ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: AppColor.white),
                                 ),
-                              ],
-                            ), // hintText: 'Ex: 52'
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.white), // Border when focused
+                                ),
+                                // hintText: 'Enter any amount', // Placeholder text
+                                label: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        'Enter any amount',
+                                        style: AppTextStyle.body1(
+                                            fontSize: 12, fontColor: AppColor.black),
+                                        overflow: TextOverflow
+                                            .ellipsis, // This adds the ellipsis
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: Text(
+                                        ' (Min: \$10)',
+                                        style: AppTextStyle.body1(
+                                            fontSize: 12,
+                                            fontColor:
+                                            AppColor.black.withOpacity(0.4)),
+                                        overflow: TextOverflow
+                                            .ellipsis, // This adds the ellipsis
+                                      ),
+                                    ),
+                                  ],
+                                ), // hintText: 'Ex: 52'
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          height: 48,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColor.secondary,
+                              elevation: 0,
+                              shadowColor: AppColor.secondary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () {
+                              FocusScope.of(context).unfocus();
+
+                              // Check if the amount is a valid positive integer
+                              if (_amount.text.isNotEmpty &&
+                                  int.tryParse(_amount.text) != null &&
+                                  int.parse(_amount.text) > 0) {
+                                try {
+                                  int amount = int.parse(_amount.text);
+                                  _payment(money: amount);
+                                } catch (e) {
+                                  print('Invalid amount: ${e.toString()}');
+                                }
+                              } else {
+                                // Optionally, you could show an error message here
+                                print('Please enter a valid amount greater than 0');
+                              }
+
+                              _amount.clear();
+                            },
+                            child: Text(
+                              'Recharge',
+                              style: AppTextStyle.body1(
+                                  fontColor: AppColor.white, fontSize: 14),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: 48,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColor.secondary,
-                        elevation: 0,
-                        shadowColor: AppColor.secondary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () {
-                        FocusScope.of(context).unfocus();
-
-                        // Check if the amount is a valid positive integer
-                        if (_amount.text.isNotEmpty && int.tryParse(_amount.text) != null && int.parse(_amount.text) > 0) {
-                          try {
-                            int amount = int.parse(_amount.text);
-                            _payment(money: amount);
-                          } catch (e) {
-                            print('Invalid amount: ${e.toString()}');
-                          }
-                        } else {
-                          // Optionally, you could show an error message here
-                          print('Please enter a valid amount greater than 0');
-                        }
-
-                        _amount.clear();
-                      },
-                      child: Text(
-                        'Recharge',
-                        style: AppTextStyle.body1(fontColor: AppColor.white, fontSize: 14),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Divider(
+                  color: AppColor.font_black.withOpacity(0.1),
+                ),
+                SizedBox(
+                  height: 15,
+                )
+              ],
             ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Divider(
-            color: AppColor.font_black.withOpacity(0.1),
-          ),
-          SizedBox(
-            height: 15,
-          ),
+          )
         ],
       ),
     );
@@ -293,39 +324,77 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
 
     switch (index) {
       case 0:
-        value = 100;
-        productId = 'recharge_100';
+        if (_is_india) {
+          value = 100;
+          productId = 'recharge_100';
+        } else {
+          value = 10;
+          productId = 'recharge_100';
+        }
         break;
       case 1:
-        value = 150;
-        productId = 'recharge_150';
+        if (_is_india) {
+          value = 150;
+          productId = 'recharge_150';
+        } else {
+          value = 15;
+          productId = 'recharge_150';
+        }
         break;
       case 2:
-        value = 200;
-        productId = 'recharge_200';
+        if (_is_india) {
+          value = 200;
+          productId = 'recharge_200';
+        } else {
+          value = 20;
+          productId = 'recharge_200';
+        }
         break;
       case 3:
-        value = 250;
-        productId = 'recharge_250';
+        if (_is_india) {
+          value = 250;
+          productId = 'recharge_250';
+        } else {
+          value = 30;
+          productId = 'recharge_250';
+        }
         break;
       case 4:
-        value = 500;
-        productId = 'recharge_500';
+        if (_is_india) {
+          value = 500;
+          productId = 'recharge_500';
+        } else {
+          value = 50;
+          productId = 'recharge_500';
+        }
         break;
       case 5:
-        value = 800;
-        productId = 'recharge_800';
+        if (_is_india) {
+          value = 800;
+          productId = 'recharge_800';
+        } else {
+          value = 100;
+          productId = 'recharge_800';
+        }
         break;
       default:
-        value = 100;
-        productId = 'recharge_100';
+        if (_is_india) {
+          value = 100;
+          productId = 'recharge_100';
+        } else {
+          value = 10;
+          productId = 'recharge_100';
+        }
         break;
     }
 
     return InkWell(
       onTap: () {
-        InAppPurchaseHandler(context: context).makePurchase(productId, value);
-        // _payment(money: value);
+        if(_is_india) {
+          _payment(money: value);
+        }else{
+          InAppPurchaseHandler(context: context).makePurchase(productId, value);
+        }
       },
       splashColor:
           AppColor.secondary.withOpacity(0.5), // Color of the ripple effect
@@ -347,8 +416,9 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '₹ ${value}',
-                    style: AppTextStyle.h1(fontSize: 18, fontColor: AppColor.black),
+                    _is_india? '₹ ${value}':'\$ ${value}',
+                    style: AppTextStyle.h1(
+                        fontSize: 18, fontColor: AppColor.black),
                   ),
                 ],
               ),
@@ -407,7 +477,8 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                     ),
                     Text(
                       'Chat Support',
-                      style: AppTextStyle.h1(fontSize: 16, fontColor: AppColor.white),
+                      style: AppTextStyle.h1(
+                          fontSize: 16, fontColor: AppColor.white),
                     ),
                   ],
                 )),
@@ -439,7 +510,12 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
   Future<void> _handlePaymentSuccess(PaymentSuccessResponse response) async {
     if (_pay_transiction != null) {
       // Update the user's balance in shared preferences
-      int value = await SharedPreferenceLogic.getCounter();
+      int value;
+      if(_is_india){
+        value = await SharedPreferenceLogic.getCounter(isIn: true);
+      }else{
+        value = await SharedPreferenceLogic.getCounter(isIn: false);
+      }
       int total = _pay_transiction! + value;
       await SharedPreferenceLogic.saveCounter(counter: total);
       // Refresh the current balance
@@ -447,7 +523,9 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
       // Reset the transaction amount
       _pay_transiction = 0;
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => CompleteScreen(amount_to_save: null,)));
+          builder: (context) => CompleteScreen(
+                amount_to_save: null,
+              )));
       // Log the payment success
       print("Payment successful: ${response.paymentId}");
     } else {
@@ -456,7 +534,8 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => FailScreen()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => FailScreen()));
     print("Payment error: ${response.code} - ${response.message}");
   }
 

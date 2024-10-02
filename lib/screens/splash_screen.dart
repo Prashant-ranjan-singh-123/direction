@@ -1,3 +1,4 @@
+import 'package:direction/services/internet/no_internet_checker.dart';
 import 'package:direction/utils/app_asset.dart';
 import 'package:direction/utils/app_color.dart';
 import 'package:direction/utils/app_fonts.dart';
@@ -5,8 +6,11 @@ import 'package:direction/utils/text_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ip_country_lookup/ip_country_lookup.dart';
+import 'package:ip_country_lookup/models/ip_country_data_model.dart';
 
-import 'bottom_nav_bar/bottom_nav_bar_main.dart';
+import '../services/shared_preference.dart';
+import 'after_login/bottom_nav_bar_main.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,16 +20,28 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     _change_page();
+    country_check();
     super.initState();
   }
 
-  void _change_page(){
-    Future.delayed(Duration(seconds: 2)).then((_){
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BottomNavBarMain()));
+  Future<void> country_check() async {
+    IpCountryData countryData = await IpCountryLookup().getIpLocationData();
+    String? data = countryData.country_code;
+    if (data == null) {
+      print('exception');
+    } else {
+      await SharedPreferenceLogic.saveCountryCode(
+          countryCodeString: data ?? '');
+    }
+  }
+
+  void _change_page() {
+    Future.delayed(Duration(seconds: 2)).then((_) {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => BottomNavBarMain()));
     });
   }
 
@@ -44,60 +60,60 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
         backgroundColor: Color.fromRGBO(251, 251, 251, 1),
         body: SafeArea(
-      bottom: false,
-      right: false,
-      left: false,
-      child: SizedBox(
-        width: double.infinity,
-        child: Column(
-          children: [
-            Spacer(),
-            _logo_top(),
-            const SizedBox(
-              height: 15,
+          bottom: false,
+          right: false,
+          left: false,
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              children: [
+                Spacer(),
+                _logo_top(),
+                const SizedBox(
+                  height: 15,
+                ),
+                _text(),
+                Spacer(),
+                _bottom_family_image()
+              ],
             ),
-            _text(),
-            Spacer(),
-            _bottom_family_image()
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 
   Widget _landscape() {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(251, 251, 251, 1),
+        backgroundColor: Color.fromRGBO(251, 251, 251, 1),
         body: SafeArea(
-      bottom: false,
-      right: false,
-      left: false,
-      child: SizedBox(
-        width: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Builder(builder: (context) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                );
-              }),
-              _logo_top(),
-              const SizedBox(
-                height: 15,
+          bottom: false,
+          right: false,
+          left: false,
+          child: SizedBox(
+            width: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Builder(builder: (context) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.3,
+                    );
+                  }),
+                  _logo_top(),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  _text(),
+                  Builder(builder: (context) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.3,
+                    );
+                  }),
+                  _bottom_family_image()
+                ],
               ),
-              _text(),
-              Builder(builder: (context) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                );
-              }),
-              _bottom_family_image()
-            ],
+            ),
           ),
-        ),
-      ),
-    ));
+        ));
   }
 
   Widget _logo_top() {

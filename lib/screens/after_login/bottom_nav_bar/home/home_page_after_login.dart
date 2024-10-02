@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconly/iconly.dart';
 
-import '../bottom_nav_bar_main.dart';
+import '../../../../services/internet/no_internet_checker.dart';
+import '../../bottom_nav_bar_main.dart';
 
 class HomePageAfterLogin extends StatefulWidget {
   const HomePageAfterLogin({super.key});
@@ -21,6 +22,7 @@ class HomePageAfterLogin extends StatefulWidget {
 class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
   late int _totalBalance;
   late bool _isLoading;
+  late bool _isIndia;
 
   @override
   void initState() {
@@ -32,7 +34,14 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
     setState(() {
       _isLoading = true;
     });
-    _totalBalance = await SharedPreferenceLogic.getCounter();
+    if('IN'==await SharedPreferenceLogic.getCountryCode()){
+      _isIndia = true;
+      _totalBalance = await SharedPreferenceLogic.getCounter(isIn: true);
+    }else{
+      _isIndia = false;
+      _totalBalance = await SharedPreferenceLogic.getCounter(isIn: false);
+    }
+    // _isIndia=false;
     setState(() {
       _isLoading = false;
     });
@@ -86,7 +95,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                 SvgPicture.asset(AppAssets.svg_wallet),
                 SizedBox(width: 15),
                 Text(
-                  '₹ ${balance}',
+                  _isIndia? '₹ ${balance}':'\$ ${balance}',
                   style: AppTextStyle.h1(),
                 ),
                 Spacer(),
@@ -95,16 +104,16 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColor.secondary,
-                      elevation: 5,
+                      elevation: 0,
                       shadowColor: AppColor.secondary,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(6),
                       ),
                     ),
                     onPressed: _recharge_now,
                     child: Text(
                       'Recharge Now',
-                      style: AppTextStyle.body1(fontColor: AppColor.white, fontSize: 12),
+                      style: AppTextStyle.body1(fontColor: AppColor.white, fontSize: 14),
                     ),
                   ),
                 ),
@@ -128,11 +137,15 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
         itemBuilder: (context, index) {
           var data = model.data[index];
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: Card(
-              color: AppColor.white,
-              elevation: 3,
-              shadowColor: AppColor.primary,
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: AppColor.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(color: AppColor.black.withOpacity(0.3), blurRadius: 2)
+                ]
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
@@ -140,7 +153,6 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Image taking maximum size
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center, // Center vertically
                           children: [

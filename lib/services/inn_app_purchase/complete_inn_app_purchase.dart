@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../screens/bottom_nav_bar/bottom_nav_bar_main.dart';
+import '../../screens/after_login/bottom_nav_bar_main.dart';
 import '../../utils/app_asset.dart';
 import '../../utils/app_color.dart';
 import '../../utils/text_style.dart';
@@ -26,7 +26,12 @@ class _CompleteScreenState extends State<CompleteScreen> {
 
   Future<void> _save_value() async {
     if(widget.amount_to_save != null) {
-      int counter = await SharedPreferenceLogic.getCounter();
+      int counter;
+      if('IN'==await SharedPreferenceLogic.getCountryCode()){
+        counter = await SharedPreferenceLogic.getCounter(isIn: true);
+      }else{
+        counter = await SharedPreferenceLogic.getCounter(isIn: false);
+      }
       int final_value = counter+ widget.amount_to_save!;
       await SharedPreferenceLogic.saveCounter(counter: final_value);
     }

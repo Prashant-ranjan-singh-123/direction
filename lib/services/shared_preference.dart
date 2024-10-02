@@ -36,19 +36,42 @@ class SharedPreferenceLogic{
 
   static Future<void> saveCounter({required int counter}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setInt(AppSharedPreference.counter, counter);
+    String? countryCode = pref.getString(AppSharedPreference.countryCodeString);
+    if(countryCode==null){
+      print('Cant save token because country code is not available');
+    }else if(countryCode=='IN'){
+      pref.setInt(AppSharedPreference.counterIn, counter);
+    }else{
+      pref.setInt(AppSharedPreference.counterNotIn, counter);
+    }
   }
 
-  static Future<void> removeCounter() async {
+  static Future<void> saveCountryCode({required String countryCodeString}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setInt(AppSharedPreference.counter, 0);
+    pref.setString(AppSharedPreference.countryCodeString, countryCodeString);
   }
 
-  static Future<int> getCounter() async {
+  static Future<String> getCountryCode() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    int? counter = pref.getInt(AppSharedPreference.counter);
+    String? counter = pref.getString(AppSharedPreference.countryCodeString);
     if (counter == null) {
-      pref.setInt(AppSharedPreference.counter, 0);
+      return '';
+    } else {
+      return counter;
+    }
+  }
+
+  static Future<int> getCounter({required bool isIn}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    int? counter;
+    if(isIn) {
+      counter = pref.getInt(AppSharedPreference.counterIn);
+    }else{
+      counter = pref.getInt(AppSharedPreference.counterNotIn);
+    }
+    if (counter == null) {
+      pref.setInt(AppSharedPreference.counterIn, 0);
+      pref.setInt(AppSharedPreference.counterNotIn, 0);
       return 0;
     } else {
       return counter;

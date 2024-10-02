@@ -3,6 +3,7 @@ import 'package:direction/utils/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../screens/after_login/bottom_nav_bar_main.dart';
 import '../../utils/app_asset.dart';
 
 class FailScreen extends StatelessWidget {
@@ -29,7 +30,12 @@ class FailScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
                   onPressed: () {
-                    Navigator.pop(context); // Go back to the previous screen
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => BottomNavBarMain(
+                                  current_page: 1,
+                                )),
+                        (Route<dynamic> route) => false);
                   },
                   child: Text(
                     'Try Again',

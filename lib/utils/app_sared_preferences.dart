@@ -1,4 +1,6 @@
 class AppSharedPreference{
   static String isLogin = 'isLogin';
-  static String counter = 'counter';
+  static String counterIn = 'counterIn';
+  static String counterNotIn = 'counterNotIn';
+  static String countryCodeString = 'countryCodeString';
 }

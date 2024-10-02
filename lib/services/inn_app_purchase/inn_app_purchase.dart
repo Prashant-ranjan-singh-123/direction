@@ -30,29 +30,36 @@ class InAppPurchaseHandler {
       Navigator.push(
           context, MaterialPageRoute(builder: (_) => WaitingScreen()));
 
-      final PurchaseParam purchaseParam = PurchaseParam(
-        productDetails: await _getProductDetails(productId),
-      );
-      _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
+      try {
+        final PurchaseParam purchaseParam = PurchaseParam(
+          productDetails: await _getProductDetails(productId),
+        );
+        _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
 
-      listenToPurchaseUpdates((purchaseDetailsList) async {
-        for (var purchase in purchaseDetailsList) {
-          if (purchase.status == PurchaseStatus.purchased) {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => CompleteScreen(
-                          amount_to_save: value,
-                        )));
-          } else if (purchase.status == PurchaseStatus.error) {
-            // Navigate to the failure screen
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) => FailScreen()));
+        listenToPurchaseUpdates((purchaseDetailsList) async {
+          for (var purchase in purchaseDetailsList) {
+            if (purchase.status == PurchaseStatus.purchased) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          CompleteScreen(
+                            amount_to_save: value,
+                          )));
+            } else if (purchase.status == PurchaseStatus.error) {
+              // Navigate to the failure screen
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (_) => FailScreen()));
+            }
           }
-        }
-      });
+        });
+      } catch (e){
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => FailScreen()));
+      }
     } else {
-      print('In-app purchases are not available.');
+      Navigator.push(
+          context, MaterialPageRoute(builder: (_) => FailScreen()));
     }
   }
 
