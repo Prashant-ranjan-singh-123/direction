@@ -27,4 +27,5 @@ class AppAssets{
 
 
   static String lottie_no_internet = 'asset/images/lottie/no_internet.json';
+  static String lottie_construction = 'asset/images/lottie/construction.json';
 }

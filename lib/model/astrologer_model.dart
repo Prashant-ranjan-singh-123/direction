@@ -3,6 +3,8 @@ import 'package:direction/utils/app_asset.dart';
 class Astrologer {
   String name;
   String fee;
+  String feeUsa;
+  String highfeeUsa;
   String highFee;
   String expertise;
   String helped;
@@ -15,6 +17,8 @@ class Astrologer {
     required this.expertise,
     required this.helped,
     required this.imageUrl,
+    required this.feeUsa,
+    required this.highfeeUsa
   });
 }
 
@@ -23,10 +27,12 @@ class AstrologerModel {
     Astrologer(
       name: 'Pastor Joseph Fernandez',
       fee: '10/min',
+      feeUsa: '1/min',
       expertise: 'Marriage Issues',
       helped: '11,000+',
       imageUrl: AppAssets.png_astrologer_1,
-      highFee: '25',
+      highFee: '70',
+      highfeeUsa: '5',
     ),
     // Add more unique astrologers as needed
     Astrologer(
@@ -36,6 +42,8 @@ class AstrologerModel {
       helped: '15,000+',
       imageUrl: AppAssets.png_astrologer_2,
       highFee: '25',
+      feeUsa: '1/min',
+      highfeeUsa: '3',
     ),
 
     Astrologer(
@@ -44,7 +52,9 @@ class AstrologerModel {
       expertise: 'Overcoming Addictions',
       helped: '650+',
       imageUrl: AppAssets.png_astrologer_3,
-      highFee: '25',
+      highFee: '30',
+      feeUsa: '1/min',
+      highfeeUsa: '5',
     ),
 
     Astrologer(
@@ -53,7 +63,9 @@ class AstrologerModel {
       expertise: 'Love Failure',
       helped: '11,000+',
       imageUrl: AppAssets.png_astrologer_4,
-      highFee: '25',
+      highFee: '20',
+      feeUsa: '1/min',
+      highfeeUsa: '3',
     ),
 
     Astrologer(
@@ -62,7 +74,9 @@ class AstrologerModel {
       expertise: 'Marriage Issues',
       helped: '16,000+',
       imageUrl: AppAssets.png_astrologer_5,
-      highFee: '25',
+      highFee: '35',
+      feeUsa: '1/min',
+      highfeeUsa: '5',
     ),
   ];
 }
