@@ -197,7 +197,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       AutoSizeText(
-                                        '₹',
+                                        _isIndia? '₹':'\$',
                                         minFontSize: 4,
                                         maxLines: 1,
                                         style: AppTextStyle.h1(fontSize: 14),
@@ -207,7 +207,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                         alignment: Alignment.center,
                                         children: [
                                           Text(
-                                            data.highFee,
+                                            _isIndia? data.highFee : data.highfeeUsa,
                                             style: AppTextStyle.h1(fontSize: 14),
                                           ),
                                           Positioned(
@@ -221,7 +221,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                         ],
                                       ),
                                       AutoSizeText(
-                                        ' ${data.fee}',
+                                        _isIndia? ' ${data.fee}': ' ${data.feeUsa}',
                                         minFontSize: 4,
                                         maxLines: 1,
                                         style: AppTextStyle.h1(fontSize: 14),
