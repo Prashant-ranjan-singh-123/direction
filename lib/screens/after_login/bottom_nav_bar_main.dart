@@ -1,5 +1,7 @@
 import 'package:direction/screens/after_login/bottom_nav_bar/home/home_page_after_login.dart';
 import 'package:direction/screens/after_login/bottom_nav_bar/recharge/recharge_page_after_login.dart';
+import 'package:direction/services/amplititude.dart';
+import 'package:direction/utils/amplititude_events_name.dart';
 import 'package:direction/utils/app_asset.dart';
 import 'package:direction/utils/app_color.dart';
 import 'package:direction/utils/text_style.dart';
@@ -75,6 +77,7 @@ class _BottomNavBarMainState extends State<BottomNavBarMain> {
 
   Widget _body_builder() {
     if (_current_selected == 0) {
+      MyAppAmplitude.instanse().logEvent(event: AmplititudeEventsName.instance().click_home);
       return HomePageAfterLogin();
     } else{
       return RechargePageAfterLogin();

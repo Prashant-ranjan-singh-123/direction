@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:direction/services/amplititude.dart';
 import 'package:direction/services/inn_app_purchase/complete_inn_app_purchase.dart';
 import 'package:direction/services/inn_app_purchase/fail_inn_app_purchase.dart';
 import 'package:direction/services/other_app_opener.dart';
@@ -13,6 +14,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../../../../services/inn_app_purchase/inn_app_purchase.dart';
 import '../../../../services/internet/no_internet_checker.dart';
+import '../../../../utils/amplititude_events_name.dart';
 import '../../../../utils/app_color.dart';
 import '../../../../utils/text_style.dart';
 import '../../bottom_nav_bar_main.dart';
@@ -271,7 +273,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
                             ),
                             onPressed: () {
                               FocusScope.of(context).unfocus();
-
+                              MyAppAmplitude.instanse().logEvent(event: AmplititudeEventsName.instance().click_recharge_custom);
                               // Check if the amount is a valid positive integer
                               if (_amount.text.isNotEmpty &&
                                   int.tryParse(_amount.text) != null &&
@@ -390,6 +392,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
 
     return InkWell(
       onTap: () {
+        MyAppAmplitude.instanse().logEvent(event: AmplititudeEventsName.instance().click_recharge_pricing_button);
         if(_is_india) {
           _payment(money: value);
         }else{
@@ -460,6 +463,7 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
             aspectRatio: 16 / 2,
             child: ElevatedButton(
                 onPressed: () async {
+                  MyAppAmplitude.instanse().logEvent(event: AmplititudeEventsName.instance().click_help);
                   await AppOpener.launchAppUsingUrl(
                       link:
                           'https://wa.me/+917993478539?text=Hey,%20I%20downloaded%20direction%20-%20I%20am%20having%20a%20problem');

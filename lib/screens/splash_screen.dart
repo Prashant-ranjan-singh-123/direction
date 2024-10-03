@@ -9,7 +9,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ip_country_lookup/ip_country_lookup.dart';
 import 'package:ip_country_lookup/models/ip_country_data_model.dart';
 
+import '../services/amplititude.dart';
 import '../services/shared_preference.dart';
+import '../utils/amplititude_events_name.dart';
 import 'after_login/bottom_nav_bar_main.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -24,8 +26,19 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     _change_page();
     country_check();
+    logFirstInstallEvent();
     super.initState();
   }
+
+  Future<void> logFirstInstallEvent() async {
+    if(await SharedPreferenceLogic.isfreshInstall()) {
+      print('This is first time of user');
+      await MyAppAmplitude.instanse().logEvent(event: AmplititudeEventsName
+          .instance()
+          .install);
+    }
+  }
+
 
   Future<void> country_check() async {
     IpCountryData countryData = await IpCountryLookup().getIpLocationData();

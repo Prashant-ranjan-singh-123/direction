@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconly/iconly.dart';
 
+import '../../../../services/amplititude.dart';
 import '../../../../services/internet/no_internet_checker.dart';
+import '../../../../utils/amplititude_events_name.dart';
 import '../../bottom_nav_bar_main.dart';
 
 class HomePageAfterLogin extends StatefulWidget {
@@ -51,6 +53,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
     // setState(() {
     //
     // });
+    MyAppAmplitude.instanse().logEvent(event: AmplititudeEventsName.instance().click_recharge_home_screen);
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BottomNavBarMain(current_page: 1,)));
   }
 
@@ -271,6 +274,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                     ),
                                   ),
                                   onPressed: () {
+                                    MyAppAmplitude.instanse().logEvent(event: AmplititudeEventsName.instance().click_call_now);
                                     // Handle recharge logic
                                   },
                                   child: Row(

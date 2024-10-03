@@ -77,4 +77,20 @@ class SharedPreferenceLogic{
       return counter;
     }
   }
+
+  static Future<bool> isfreshInstall() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    bool? isfreshInstal = pref.getBool(AppSharedPreference.firstInstall);
+
+    if(isfreshInstal==null){
+      await pref.setBool(AppSharedPreference.firstInstall, false);
+      return true;
+    } else if(isfreshInstal){
+      await pref.setBool(AppSharedPreference.firstInstall, false);
+      return true;
+    }else{
+      await pref.setBool(AppSharedPreference.firstInstall, false);
+      return true;
+    }
+  }
 }
