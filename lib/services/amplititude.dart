@@ -12,7 +12,7 @@ class MyAppAmplitude {
     final Amplitude analytics = Amplitude.getInstance(instanceName: "default");
     analytics.init("2e61ff14942687a0ea478d42d70c6276");
 
-    // Optionally set the user ID
+    // Optionally set the user ID.
     analytics.setUserId('abc123');
 
     // Log an event
