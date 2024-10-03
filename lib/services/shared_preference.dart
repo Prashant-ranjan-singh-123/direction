@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/app_sared_preferences.dart';
+import '../utils/userIdGenerator.dart';
 
 class SharedPreferenceLogic{
   static Future<bool> isLogIn() async {
@@ -91,6 +92,23 @@ class SharedPreferenceLogic{
     }else{
       await pref.setBool(AppSharedPreference.firstInstall, false);
       return true;
+    }
+  }
+
+  static Future<void> saveAmplititudeUserId({required String UserId}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString(AppSharedPreference.AmplititudeUserId, UserId);
+  }
+
+  static Future<String> getAmplititudeUserId() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? isLogIn = pref.getString(AppSharedPreference.AmplititudeUserId);
+    if (isLogIn == null) {
+      String randomUserId = AmplititudeUserId.generateRandomString(len: 12);
+      await saveAmplititudeUserId(UserId: randomUserId);
+      return randomUserId;
+    } else {
+      return isLogIn;
     }
   }
 }

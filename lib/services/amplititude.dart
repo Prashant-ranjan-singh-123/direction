@@ -1,4 +1,10 @@
+
+
+import 'dart:developer';
+
 import 'package:amplitude_flutter/amplitude.dart';
+
+import '../utils/userIdGenerator.dart';
 
 class MyAppAmplitude {
   MyAppAmplitude._privateConstructor();
@@ -9,15 +15,21 @@ class MyAppAmplitude {
 
   Future<void> logEvent({required String event}) async {
     // Create Amplitude instance and pass the API key
-    final Amplitude analytics = Amplitude.getInstance(instanceName: "default");
-    analytics.init("2e61ff14942687a0ea478d42d70c6276");
+    try {
+      final Amplitude analytics = Amplitude.getInstance(
+          instanceName: "default");
+      analytics.init("2e61ff14942687a0ea478d42d70c6276");
 
-    // Optionally set the user ID.
-    analytics.setUserId('abc123');
+      // Optionally set the user ID.
+      var userId = await AmplititudeUserId.instance().getUserId();
+      analytics.setUserId(userId);
 
-    // Log an event
-    analytics.logEvent(event);
+      // Log an event
+      analytics.logEvent(event);
 
-    print('${event} event logged successfully.');
+      print('${event} event logged successfully.');
+    } catch (e){
+      log('Error Occur while taking response (amplititude)');
+    }
   }
 }

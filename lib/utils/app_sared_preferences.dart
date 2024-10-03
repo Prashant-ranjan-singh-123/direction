@@ -4,4 +4,5 @@ class AppSharedPreference{
   static String counterNotIn = 'counterNotIn';
   static String countryCodeString = 'countryCodeString';
   static String firstInstall = 'firstInstall';
+  static String AmplititudeUserId = 'AmplititudeUserId';
 }
