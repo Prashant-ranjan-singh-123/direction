@@ -3,18 +3,19 @@
 import 'dart:developer';
 
 import 'package:amplitude_flutter/amplitude.dart';
+import 'package:direction/services/my_app_firebase_analytics/AnalyticsEngine.dart';
 
 import '../utils/userIdGenerator.dart';
 
-class MyAppAmplitude {
-  MyAppAmplitude._privateConstructor();
+class MyAppAmplitudeAndFirebaseAnalitics {
+  MyAppAmplitudeAndFirebaseAnalitics._privateConstructor();
 
-  static MyAppAmplitude instanse(){
-    return MyAppAmplitude._privateConstructor();
+  static MyAppAmplitudeAndFirebaseAnalitics instanse(){
+    return MyAppAmplitudeAndFirebaseAnalitics._privateConstructor();
   }
 
   Future<void> logEvent({required String event}) async {
-    // Create Amplitude instance and pass the API key
+    // Amplitude Event
     try {
       final Amplitude analytics = Amplitude.getInstance(
           instanceName: "default");
@@ -30,6 +31,12 @@ class MyAppAmplitude {
       print('${event} event logged successfully.');
     } catch (e){
       log('Error Occur while taking response (amplititude)');
+    }
+
+    try{
+      AnalyticsEngine.instace.logFirebaseEvent(FirebaseEventName: event);
+    }catch (e){
+      log('Error while logging firebase event');
     }
   }
 }

@@ -1,4 +1,4 @@
-class AmplititudeEventsName{
+class LogEventsName{
   String login = 'login';
   String click_call_now = 'click_call_now';
   String click_recharge_home_screen = 'click_recharge_home_screen';
@@ -8,8 +8,8 @@ class AmplititudeEventsName{
   String install = 'install';
   String click_home = 'click_home';
 
-  AmplititudeEventsName._privateConstructor();
-  static AmplititudeEventsName instance(){
-    return AmplititudeEventsName._privateConstructor();;
+  LogEventsName._privateConstructor();
+  static LogEventsName instance(){
+    return LogEventsName._privateConstructor();;
   }
 }

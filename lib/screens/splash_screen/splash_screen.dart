@@ -1,3 +1,5 @@
+import 'package:direction/main.dart';
+import 'package:direction/screens/splash_screen/splash_screen_cubit.dart';
 import 'package:direction/services/internet/no_internet_checker.dart';
 import 'package:direction/utils/app_asset.dart';
 import 'package:direction/utils/app_color.dart';
@@ -5,14 +7,15 @@ import 'package:direction/utils/app_fonts.dart';
 import 'package:direction/utils/text_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ip_country_lookup/ip_country_lookup.dart';
 import 'package:ip_country_lookup/models/ip_country_data_model.dart';
 
-import '../services/amplititude.dart';
-import '../services/shared_preference.dart';
-import '../utils/amplititude_events_name.dart';
-import 'after_login/bottom_nav_bar_main.dart';
+import '../../services/amplititude.dart';
+import '../../services/shared_preference.dart';
+import '../../utils/log_events_name.dart';
+import '../after_login/bottom_nav_bar_main.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -24,42 +27,15 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    _change_page();
-    country_check();
-    logFirstInstallEvent();
+    context.read<SplashScreenCubit>().country_check();
+    context.read<SplashScreenCubit>().logFirstInstallEvent();
     super.initState();
-  }
-
-  Future<void> logFirstInstallEvent() async {
-    if(await SharedPreferenceLogic.isfreshInstall()) {
-      print('This is first time of user');
-      await MyAppAmplitude.instanse().logEvent(event: AmplititudeEventsName
-          .instance()
-          .install);
-    }
-  }
-
-
-  Future<void> country_check() async {
-    IpCountryData countryData = await IpCountryLookup().getIpLocationData();
-    String? data = countryData.country_code;
-    if (data == null) {
-      print('exception');
-    } else {
-      await SharedPreferenceLogic.saveCountryCode(
-          countryCodeString: data ?? '');
-    }
-  }
-
-  void _change_page() {
-    Future.delayed(Duration(seconds: 2)).then((_) {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => BottomNavBarMain()));
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    context.read<SplashScreenCubit>().change_page(context: context);
+
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.portrait) {
         return _portrate();

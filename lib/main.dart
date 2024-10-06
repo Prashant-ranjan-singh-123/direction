@@ -1,16 +1,23 @@
 import 'package:direction/screens/before_login/login/login_cubit.dart';
-import 'package:direction/screens/splash_screen.dart';
 import 'package:direction/services/is_user_loged_in/login_check_cubit.dart';
+import 'package:direction/services/my_app_firebase_analytics/AnalyticsEngine.dart';
 import 'package:direction/services/prashant_app_open_permission/prashant_app_open__permission_screen.dart';
 import 'package:direction/services/prashant_app_open_permission/prashant_app_open_permission_cubit.dart';
-import 'package:direction/services/shared_preference.dart';
 import 'package:direction/utils/app_color.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'firebase_options.dart';
+
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // AnalyticsEngine.instance;
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(AppStarter());
 }
 
@@ -30,12 +37,12 @@ class AppStarter extends StatelessWidget {
         BlocProvider<LoginCheckCubit>(
           create: (BuildContext context) => LoginCheckCubit(),
         ),
-        BlocProvider<PrashantAppOpenPermissionCubit>(
-          create: (BuildContext context) => PrashantAppOpenPermissionCubit(),
-        )
       ],
       child: MaterialApp(
-        home: PrashantAppOpenPermission(),
+        home: BlocProvider(
+          create: (context) => PrashantAppOpenPermissionCubit(),
+          child: PrashantAppOpenPermission(),
+        ),
         theme: ThemeData(
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,

@@ -1,4 +1,5 @@
-import 'package:direction/screens/splash_screen.dart';
+import 'package:direction/screens/splash_screen/splash_screen.dart';
+import 'package:direction/screens/splash_screen/splash_screen_cubit.dart';
 import 'package:direction/services/prashant_app_open_permission/prashant_app_open__permission_state.dart';
 import 'package:direction/services/prashant_app_open_permission/prashant_app_open_permission_cubit.dart';
 import 'package:direction/utils/app_color.dart';
@@ -24,45 +25,47 @@ class _PrashantAppOpenPermissionState extends State<PrashantAppOpenPermission> {
   void initState() {
     super.initState();
     // Trigger the initial authentication check
-    BlocProvider.of<PrashantAppOpenPermissionCubit>(context).prashantAuth();
+    context.read<PrashantAppOpenPermissionCubit>().prashantAuth();
   }
 
   @override
   Widget build(BuildContext context) {
+    final canLoad = context.select(
+      (PrashantAppOpenPermissionCubit cubit) => cubit.state.canLoad,
+    );
+    final loadingState = context.select(
+      (PrashantAppOpenPermissionCubit cubit) => cubit.state.loadingState,
+    );
+
     return Scaffold(
-      body: BlocBuilder<PrashantAppOpenPermissionCubit,
-          PrashantAppOpenPermissionState>(
-        builder: (context, state) {
-          if (state is InitialState) {
-            return _buildUI(
-              isLoading: state.loading,
-              canLoad: state.canLoad,
-            );
-          } else {
-            // Fallback case in case of unexpected state
-            return _buildUI(isLoading: false, canLoad: 1);
-          }
-        },
-      ),
+      body: _buildUI(
+          isLoading: loadingState == APILoadingState.loading, canLoad: canLoad),
     );
   }
 
   Widget _buildUI({required bool isLoading, required int canLoad}) {
     if (isLoading || canLoad == 0) {
-      return SplashScreenHere();
+      return SplashScreenHere(context: context);
     } else if (canLoad == 1) {
-      return const SplashScreen(); // Use 'const' for stateless widgets
+      return BlocProvider(
+        create: (context) => SplashScreenCubit(),
+        child: SplashScreen(),
+      );
     } else {
       // In case of canLoad == 2, return a placeholder or another screen
       return _error_screen();
     }
   }
 
+  Widget _insisibleText() {
+    // final visibility = context.select(
+    //       (PrashantAppOpenPermissionCubit cubit) => cubit.state.visibility,
+    // );
 
+    return Visibility(visible: false, child: Text('Data hidden'));
+  }
 
-
-
-  Widget SplashScreenHere() {
+  Widget SplashScreenHere({required BuildContext context}) {
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.portrait) {
         return _portrate();
@@ -90,7 +93,8 @@ class _PrashantAppOpenPermissionState extends State<PrashantAppOpenPermission> {
                 ),
                 _text(),
                 Spacer(),
-                _bottom_family_image()
+                _bottom_family_image(),
+                _insisibleText()
               ],
             ),
           ),
@@ -162,15 +166,13 @@ class _PrashantAppOpenPermissionState extends State<PrashantAppOpenPermission> {
     return Image.asset(AppAssets.png_splash_family);
   }
 
-  Widget _error_screen(){
+  Widget _error_screen() {
     return SingleChildScrollView(
       child: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Lottie.asset(AppAssets.lottie_construction)
-          ],
+          children: [Lottie.asset(AppAssets.lottie_construction)],
         ),
       ),
     );

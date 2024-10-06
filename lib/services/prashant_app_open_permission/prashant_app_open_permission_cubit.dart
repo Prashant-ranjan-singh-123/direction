@@ -5,24 +5,52 @@ import 'package:direction/services/prashant_app_open_permission/prashant_app_ope
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PrashantAppOpenPermissionCubit extends Cubit<PrashantAppOpenPermissionState>{
-  PrashantAppOpenPermissionCubit() : super(InitialState(loading: true, canLoad: 0));
+  PrashantAppOpenPermissionCubit() : super(const PrashantAppOpenPermissionState());
 
   Future<void> prashantAuth() async {
-    emit(InitialState(loading: true, canLoad: 0));
+    emit(
+        state.copyWith(
+          loadingState: APILoadingState.loading,
+          canLoad: 0,
+          visibility: false
+        )
+    );
 
     try {
       Response data = await EndPoints.instanse().direction();
       if (data.statusCode != 200) {
-        emit(InitialState(loading: false, canLoad: 1));
+        emit(
+            state.copyWith(
+              loadingState: APILoadingState.success,
+              canLoad: 1,
+            )
+        );
       } else {
         if (data.data['success']) {
-          emit(InitialState(loading: false, canLoad: 1));
+          emit(
+              state.copyWith(
+                loadingState: APILoadingState.success,
+                canLoad: 1,
+                visibility: true,
+              )
+          );
         } else {
-          emit(InitialState(loading: false, canLoad: 2));
+          emit(
+              state.copyWith(
+                loadingState: APILoadingState.failed,
+                canLoad: 2,
+              )
+          );
         }
       }
     } catch (e){
-      emit(InitialState(loading: false, canLoad: 1));
+      emit(
+          state.copyWith(
+            loadingState: APILoadingState.failed,
+            canLoad: 1,
+          )
+      );
     }
   }
+
 }
