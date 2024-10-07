@@ -43,10 +43,10 @@ class _BottomNavBarMainState extends State<BottomNavBarMain> {
         body: _body_builder(),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: AppColor.secondary,
-          selectedLabelStyle:
-              AppTextStyle.body1(fontSize: 14).copyWith(fontWeight: FontWeight.w900),
-          unselectedLabelStyle:
-          AppTextStyle.body1(fontSize: 14).copyWith(fontWeight: FontWeight.w900),
+          selectedLabelStyle: AppTextStyle.body1(fontSize: 14)
+              .copyWith(fontWeight: FontWeight.w900),
+          unselectedLabelStyle: AppTextStyle.body1(fontSize: 14)
+              .copyWith(fontWeight: FontWeight.w900),
           selectedFontSize: 12,
           unselectedFontSize: 10,
           items: [
@@ -64,7 +64,7 @@ class _BottomNavBarMainState extends State<BottomNavBarMain> {
             setState(() {
               if (page == 0) {
                 _current_selected = 0;
-              } else{
+              } else {
                 _current_selected = 1;
               }
             });
@@ -77,9 +77,10 @@ class _BottomNavBarMainState extends State<BottomNavBarMain> {
 
   Widget _body_builder() {
     if (_current_selected == 0) {
-      MyAppAmplitudeAndFirebaseAnalitics.instanse().logEvent(event: LogEventsName.instance().click_home);
+      MyAppAmplitudeAndFirebaseAnalitics.instanse()
+          .logEvent(event: LogEventsName.instance().click_home);
       return HomePageAfterLogin();
-    } else{
+    } else {
       return RechargePageAfterLogin();
     }
   }
