@@ -7,6 +7,7 @@ class LogEventsName{
   String click_help = 'click_help';
   String install = 'install';
   String click_home = 'click_home';
+  String click_call_now_recharge_alert = 'click_call_now_recharge_alert';
 
   LogEventsName._privateConstructor();
   static LogEventsName instance(){

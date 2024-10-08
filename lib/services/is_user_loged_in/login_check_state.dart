@@ -1,12 +1,24 @@
-class LoginCheckState{}
+import 'package:equatable/equatable.dart';
 
-class LoadingState extends LoginCheckState{}
+class LoginCheckState extends Equatable {
+  bool loading;
+  String? error;
+  bool? isTokenPresent;
 
-class TokenFoundState extends LoginCheckState{}
+  LoginCheckState(
+      {this.loading = true, this.error = null, this.isTokenPresent = null});
 
-class TokenNotFoundState extends LoginCheckState{}
+  LoginCheckState copyWith({
+    bool? loading = true,
+    String? error = null,
+    bool? isTokenPresent = null,
+  }) {
+    return LoginCheckState(
+        loading: loading ?? this.loading,
+        error: error ?? this.error,
+        isTokenPresent: isTokenPresent ?? this.isTokenPresent);
+  }
 
-class ErrorState extends LoginCheckState{
-  String error;
-  ErrorState({required this.error});
+  @override
+  List<Object?> get props => [loading, error, isTokenPresent];
 }

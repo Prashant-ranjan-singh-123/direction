@@ -9,16 +9,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<LoginCubit, LoginState>(builder: (context, state){
-        if(state is InitialState){
-          return _login_screen(isCorrectMobileNumber: state.isInvalidMobileNumber);
-        }else if(state is OtpState){
-          return _otp_screen();
-        }else{
-          return SizedBox();
-        }
-      }),
-    );
+      body: Center(child: Text('Login Screen'),)
+      );
   }
 
   Widget _login_screen({required bool isCorrectMobileNumber}){

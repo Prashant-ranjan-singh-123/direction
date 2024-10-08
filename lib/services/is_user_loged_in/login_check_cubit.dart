@@ -3,19 +3,19 @@ import 'package:direction/services/shared_preference.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginCheckCubit extends Cubit<LoginCheckState>{
-  LoginCheckCubit(): super(LoadingState());
+  LoginCheckCubit(): super(LoginCheckState());
 
   Future<void> checkToken() async {
     try {
-      emit(LoginCheckState());
+      await SharedPreferenceLogic.setLoginTrue();
       bool isLogin = await SharedPreferenceLogic.isLogIn();
       if(isLogin){
-        emit(TokenFoundState());
+        emit(state.copyWith(loading: false,  isTokenPresent: true));
       }else{
-        emit(TokenFoundState());
+        emit(state.copyWith(loading: false, isTokenPresent: false));
       }
     } catch (e){
-      emit(ErrorState(error: e.toString()));
+      emit(state.copyWith(loading: false, error: e.toString()));
     }
   }
 }

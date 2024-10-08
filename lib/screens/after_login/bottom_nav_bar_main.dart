@@ -6,82 +6,72 @@ import 'package:direction/utils/app_asset.dart';
 import 'package:direction/utils/app_color.dart';
 import 'package:direction/utils/text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../services/internet/no_internet_checker.dart';
+import 'bottom_nav_bar_cubit.dart';
 
-class BottomNavBarMain extends StatefulWidget {
-  int current_page;
-  BottomNavBarMain({super.key, this.current_page = 0});
+class BottomNavBarMain extends StatelessWidget {
+  final int initialPage;
 
-  @override
-  State<BottomNavBarMain> createState() => _BottomNavBarMainState();
-}
-
-class _BottomNavBarMainState extends State<BottomNavBarMain> {
-  @override
-  late int _current_selected;
-  List<List<dynamic>> bottomNavBarItems = [
-    [SvgPicture.asset(AppAssets.svg_home_inactive), 'Home'],
-    [SvgPicture.asset(AppAssets.svg_recharge_inactive), 'Recharge'],
-  ];
-
-  List<dynamic> activeIcon = [
-    SvgPicture.asset(AppAssets.svg_home_active),
-    SvgPicture.asset(AppAssets.svg_recharge_active),
-  ];
+  const BottomNavBarMain({super.key, this.initialPage = 0});
 
   @override
-  void initState() {
-    _current_selected = widget.current_page;
-    super.initState();
-  }
-
   Widget build(BuildContext context) {
-    return NoInternetConnectionChecker(
-      child: Scaffold(
-        body: _body_builder(),
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: AppColor.secondary,
-          selectedLabelStyle: AppTextStyle.body1(fontSize: 14)
-              .copyWith(fontWeight: FontWeight.w900),
-          unselectedLabelStyle: AppTextStyle.body1(fontSize: 14)
-              .copyWith(fontWeight: FontWeight.w900),
-          selectedFontSize: 12,
-          unselectedFontSize: 10,
-          items: [
-            BottomNavigationBarItem(
-                icon: bottomNavBarItems[0][0],
-                label: bottomNavBarItems[0][1],
-                activeIcon: activeIcon[0]),
-            BottomNavigationBarItem(
-              icon: bottomNavBarItems[1][0],
-              label: bottomNavBarItems[1][1],
-              activeIcon: activeIcon[1],
-            ),
-          ],
-          onTap: (var page) {
-            setState(() {
-              if (page == 0) {
-                _current_selected = 0;
-              } else {
-                _current_selected = 1;
-              }
-            });
-          },
-          currentIndex: _current_selected,
+    return BlocProvider(
+      create: (context) => BottomNavBarCubit()..updatePage(initialPage),
+      child: NoInternetConnectionChecker(
+        child: Scaffold(
+          body: BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
+            builder: (context, state) {
+              return _buildBody(state.currentIndex);
+            },
+          ),
+          bottomNavigationBar: BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
+            builder: (context, state) {
+              return _buildBottomNavigationBar(context, state.currentIndex);
+            },
+          ),
         ),
       ),
     );
   }
 
-  Widget _body_builder() {
-    if (_current_selected == 0) {
+  Widget _buildBody(int currentIndex) {
+    if (currentIndex == 0) {
       MyAppAmplitudeAndFirebaseAnalitics.instanse()
           .logEvent(event: LogEventsName.instance().click_home);
       return HomePageAfterLogin();
     } else {
       return RechargePageAfterLogin();
     }
+  }
+
+  Widget _buildBottomNavigationBar(BuildContext context, int currentIndex) {
+    return BottomNavigationBar(
+      selectedItemColor: AppColor.secondary,
+      selectedLabelStyle: AppTextStyle.body1(fontSize: 14)
+          .copyWith(fontWeight: FontWeight.w900),
+      unselectedLabelStyle: AppTextStyle.body1(fontSize: 14)
+          .copyWith(fontWeight: FontWeight.w900),
+      selectedFontSize: 12,
+      unselectedFontSize: 10,
+      items: [
+        BottomNavigationBarItem(
+            icon: SvgPicture.asset(AppAssets.svg_home_inactive),
+            label: 'Home',
+            activeIcon: SvgPicture.asset(AppAssets.svg_home_active)),
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(AppAssets.svg_recharge_inactive),
+          label: 'Recharge',
+          activeIcon: SvgPicture.asset(AppAssets.svg_recharge_active),
+        ),
+      ],
+      onTap: (page) {
+        context.read<BottomNavBarCubit>().updatePage(page);
+      },
+      currentIndex: currentIndex,  // Make sure this is reading from the updated state
+    );
   }
 }

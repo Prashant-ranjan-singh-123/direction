@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../screens/after_login/bottom_nav_bar_cubit.dart';
 import '../../screens/after_login/bottom_nav_bar_main.dart';
 import '../../utils/app_asset.dart';
 import '../../utils/app_color.dart';
@@ -61,11 +63,14 @@ class _CompleteScreenState extends State<CompleteScreen> {
                           borderRadius: BorderRadius.circular(12))),
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (context) => BottomNavBarMain(
-                                  current_page: 1,
-                                )),
-                        (Route<dynamic> route) => false);
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider(
+                          create: (context) => BottomNavBarCubit(),
+                          child: BottomNavBarMain(initialPage: 1), // Set `current_page` to 1 (Recharge tab)
+                        ),
+                      ),
+                          (Route<dynamic> route) => false, // This clears the navigation stack
+                    );
                   },
                   child: Text(
                     'Continue To App',

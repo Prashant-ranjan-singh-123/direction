@@ -1,5 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:direction/model/astrologer_model.dart';
+import 'package:direction/screens/after_login/bottom_nav_bar/home/home_page_cubit.dart';
+import 'package:direction/screens/after_login/bottom_nav_bar_cubit.dart';
 import 'package:direction/services/shared_preference.dart';
 import 'package:direction/shared/app_bar.dart';
 import 'package:direction/utils/app_asset.dart';
@@ -7,6 +9,7 @@ import 'package:direction/utils/app_color.dart';
 import 'package:direction/utils/text_style.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconly/iconly.dart';
 
@@ -14,6 +17,7 @@ import '../../../../services/amplititude.dart';
 import '../../../../services/internet/no_internet_checker.dart';
 import '../../../../utils/log_events_name.dart';
 import '../../bottom_nav_bar_main.dart';
+import 'dialog_box/DialogBoxHome.dart';
 
 class HomePageAfterLogin extends StatefulWidget {
   const HomePageAfterLogin({super.key});
@@ -51,15 +55,38 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
   }
 
   void _recharge_now() {
-    // setState(() {
-    //
-    // });
-    MyAppAmplitudeAndFirebaseAnalitics.instanse().logEvent(
-        event: LogEventsName.instance().click_recharge_home_screen);
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => BottomNavBarMain(
-              current_page: 1,
-            )));
+    MyAppAmplitudeAndFirebaseAnalitics.instanse()
+        .logEvent(event: LogEventsName.instance().click_recharge_home_screen);
+    Navigator.of(context).pushReplacement(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => BlocProvider(
+          create: (context) => BottomNavBarCubit(),
+          child: BottomNavBarMain(initialPage: 1),
+        ),
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+      ),
+    );
+  }
+
+  void _call_now() {
+    if(_totalBalance<=0) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            contentPadding: const EdgeInsets.only(
+                top: 0, left: 0, right: 0, bottom: 10),
+            backgroundColor: AppColor.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                  22.0), // Adjust the radius as needed
+            ),
+            content: const Dialogboxhome(),
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -301,11 +328,12 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                     ),
                                   ),
                                   onPressed: () {
-
-
-                                    MyAppAmplitudeAndFirebaseAnalitics.instanse().logEvent(
-                                        event: LogEventsName.instance()
-                                            .click_call_now);
+                                    _call_now();
+                                    MyAppAmplitudeAndFirebaseAnalitics
+                                            .instanse()
+                                        .logEvent(
+                                            event: LogEventsName.instance()
+                                                .click_call_now);
                                     // Handle recharge logic
                                   },
                                   child: Row(
