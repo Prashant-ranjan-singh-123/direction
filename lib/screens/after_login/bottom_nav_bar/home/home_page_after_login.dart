@@ -344,6 +344,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                       SizedBox(width: 10),
                                       AutoSizeText(
                                         'Call Now',
+
                                         maxLines: 2,
                                         minFontSize: 6,
                                         style: AppTextStyle.body1(
