@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../services/internet/no_internet_checker.dart';
+import 'bottom_nav_bar/profile/profile_page_after_login.dart';
 import 'bottom_nav_bar_cubit.dart';
 
 class BottomNavBarMain extends StatelessWidget {
@@ -43,8 +44,10 @@ class BottomNavBarMain extends StatelessWidget {
       MyAppAmplitudeAndFirebaseAnalitics.instanse()
           .logEvent(event: LogEventsName.instance().click_home);
       return HomePageAfterLogin();
-    } else {
+    }else if(currentIndex ==1){
       return RechargePageAfterLogin();
+    } else {
+      return ProfilePageAfterLogin();
     }
   }
 
@@ -66,6 +69,11 @@ class BottomNavBarMain extends StatelessWidget {
           icon: SvgPicture.asset(AppAssets.svg_recharge_inactive),
           label: 'Recharge',
           activeIcon: SvgPicture.asset(AppAssets.svg_recharge_active),
+        ),
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(AppAssets.svg_profile_inactive),
+          label: 'Profile',
+          activeIcon: SvgPicture.asset(AppAssets.svg_profile_active),
         ),
       ],
       onTap: (page) {
