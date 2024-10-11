@@ -6,6 +6,7 @@ class AppAssets{
   static String png_astrologer_4 = 'asset/images/png/doctor_4.png';
   static String png_astrologer_5 = 'asset/images/png/doctor_5.png';
   static String png_no_internet = 'asset/images/png/no_internet_text.png';
+  static String png_only_logo = 'asset/images/png/only_logo.png';
 
 
   static String svg_logo = 'asset/images/svg/logo.svg';
@@ -17,6 +18,7 @@ class AppAssets{
   static String svg_shield = 'asset/images/svg/Shield.svg';
   static String svg_logout = 'asset/images/svg/Logout.svg';
   static String svg_default_profile_photo = 'asset/images/svg/user_default.svg';
+  static String svg_google = 'asset/images/svg/google.svg';
 
   static String svg_home_active = 'asset/images/svg/home_active.svg';
   static String svg_home_inactive = 'asset/images/svg/home_inactive.svg';

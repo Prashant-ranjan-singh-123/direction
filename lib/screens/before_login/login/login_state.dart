@@ -1,10 +1,7 @@
-class LoginState{}
+import 'package:equatable/equatable.dart';
 
-class InitialState extends LoginState{
-  bool isInvalidMobileNumber;
-  InitialState({required this.isInvalidMobileNumber});
+class LoginState extends Equatable{
+
+  @override
+  List<Object?> get props => [];
 }
-
-class OtpState extends LoginState{}
-
-class WrongOtpState extends LoginState{}

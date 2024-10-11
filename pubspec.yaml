@@ -32,6 +32,7 @@ dependencies:
   equatable: ^2.0.5
   firebase_analytics: ^11.3.3
   firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
 
 
 
@@ -44,7 +45,7 @@ dev_dependencies:
 flutter_launcher_icons:
   ios: true
   android: false
-  image_path: "asset/images/png/ic_launcher-playstore.png"
+  image_path: "asset/images/png/only_logo.png"
   remove_alpha_ios: true
 
   flutter_lints: ^4.0.0
