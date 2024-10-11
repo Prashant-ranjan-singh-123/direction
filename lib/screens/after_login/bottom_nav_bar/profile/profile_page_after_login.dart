@@ -1,4 +1,7 @@
+import 'package:direction/main.dart';
+import 'package:direction/screens/after_login/bottom_nav_bar/profile/profile_page_after_login_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:iconly/iconly.dart';
 
@@ -18,6 +21,14 @@ class ProfilePageAfterLogin extends StatefulWidget {
 }
 
 class _ProfilePageAfterLoginState extends State<ProfilePageAfterLogin> {
+  late ProfileScreenAfterLoginCubit profileScreenAfterLoginCubit;
+
+  @override
+  void initState() {
+    profileScreenAfterLoginCubit = context.read<ProfileScreenAfterLoginCubit>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,21 +43,23 @@ class _ProfilePageAfterLoginState extends State<ProfilePageAfterLogin> {
                 logoString: AppAssets.svg_shield,
                 name: 'Privacy Policy',
                 fun: () {
-                  AppOpener.launchPrivacyPolicy();
+                  profileScreenAfterLoginCubit.click_privacy_policy();
                 }),
             _profile_buttons(
-                logoString: AppAssets.svg_logout, name: 'Log Out', fun: () {}),
+                logoString: AppAssets.svg_logout,
+                name: 'Log Out',
+                fun: () => profileScreenAfterLoginCubit.click_log_out()),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.04,
             ),
-            _build_chat_support()
+            _build_chat_support(context: context)
           ],
         ),
       ),
     );
   }
 
-  Widget _build_chat_support() {
+  Widget _build_chat_support({required BuildContext context}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
@@ -65,11 +78,7 @@ class _ProfilePageAfterLoginState extends State<ProfilePageAfterLogin> {
             aspectRatio: 16 / 2,
             child: ElevatedButton(
                 onPressed: () async {
-                  MyAppAmplitudeAndFirebaseAnalitics.instanse()
-                      .logEvent(event: LogEventsName.instance().click_help);
-                  await AppOpener.launchAppUsingUrl(
-                      link:
-                          'https://wa.me/+917993478539?text=Hey,%20I%20downloaded%20direction%20-%20I%20am%20having%20a%20problem');
+                  profileScreenAfterLoginCubit.click_chat_support();
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: AppColor.secondary,

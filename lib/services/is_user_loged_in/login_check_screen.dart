@@ -1,4 +1,5 @@
 import 'package:direction/screens/after_login/bottom_nav_bar/home/home_page_after_login.dart';
+import 'package:direction/screens/after_login/bottom_nav_bar/profile/profile_page_after_login_cubit.dart';
 import 'package:direction/screens/after_login/bottom_nav_bar_cubit.dart';
 import 'package:direction/services/is_user_loged_in/login_check_cubit.dart';
 import 'package:direction/services/is_user_loged_in/login_check_state.dart';
@@ -41,9 +42,9 @@ class _LoginCheckScreenState extends State<LoginCheckScreen> {
   Widget _build_ui({required LoginCheckState state}) {
     if (state.loading) {
       return _loadingState();
-    } else if (state.error!=null) {
+    } else if (state.error != null) {
       return _error_page(errorMessage: state.error!);
-    } else if (state.isTokenPresent==true) {
+    } else if (state.isTokenPresent == true) {
       return _token_found();
     } else {
       return _token_not_found();
@@ -68,10 +69,10 @@ class _LoginCheckScreenState extends State<LoginCheckScreen> {
     Future.delayed(Duration.zero, () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => BlocProvider<BottomNavBarCubit>(
-            create: (BuildContext context) => BottomNavBarCubit(),
-            child: BottomNavBarMain(initialPage: 0,),
-          ),
+          builder: (context) => MultiBlocProvider(providers: [
+            BlocProvider(create: (context) => BottomNavBarCubit()),
+            BlocProvider(create: (context) => ProfileScreenAfterLoginCubit())
+          ], child: BottomNavBarMain()),
         ),
       );
     });
