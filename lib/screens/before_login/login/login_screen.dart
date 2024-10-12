@@ -17,8 +17,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColor.primary,
-        body: _design_2(context: context));
+        backgroundColor: AppColor.primary, body: _design_2(context: context));
   }
 
   Widget _logo() {
@@ -52,8 +51,7 @@ class LoginScreen extends StatelessWidget {
 
   Widget _logo_design_2(double screenWidth) {
     return SizedBox(
-        width: screenWidth*0.2,
-        child: Image.asset(AppAssets.png_only_logo));
+        width: screenWidth * 0.2, child: Image.asset(AppAssets.png_only_logo));
   }
 
   Widget _otp_screen() {
@@ -151,7 +149,9 @@ class LoginScreen extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12))),
                         onPressed: () {
-                          context.read<LoginCubit>().continue_with_google();
+                          context
+                              .read<LoginCubit>()
+                              .continue_with_google(context: context);
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 15),
@@ -200,7 +200,9 @@ class LoginScreen extends StatelessWidget {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   // Handle the tap event here
-                                  context.read<LoginCubit>().open_terms_and_condition();
+                                  context
+                                      .read<LoginCubit>()
+                                      .open_terms_and_condition();
                                   // Navigate to the terms and conditions page
                                 },
                             ),

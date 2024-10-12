@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'firebase_options.dart';
+import 'screens/after_login/bottom_nav_bar/profile/profile_page_after_login_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +38,8 @@ class AppStarter extends StatelessWidget {
         BlocProvider<LoginCheckCubit>(
           create: (BuildContext context) => LoginCheckCubit(),
         ),
+        BlocProvider<ProfileScreenAfterLoginCubit>(
+            create: (context) => ProfileScreenAfterLoginCubit())
       ],
       child: MaterialApp(
         home: BlocProvider(

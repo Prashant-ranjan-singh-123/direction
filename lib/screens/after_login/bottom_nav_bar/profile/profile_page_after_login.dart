@@ -1,5 +1,6 @@
 import 'package:direction/main.dart';
 import 'package:direction/screens/after_login/bottom_nav_bar/profile/profile_page_after_login_cubit.dart';
+import 'package:direction/screens/after_login/bottom_nav_bar/profile/profile_screen_after_login_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,41 +23,56 @@ class ProfilePageAfterLogin extends StatefulWidget {
 
 class _ProfilePageAfterLoginState extends State<ProfilePageAfterLogin> {
   late ProfileScreenAfterLoginCubit profileScreenAfterLoginCubit;
+  late List<String?> data;
 
   @override
   void initState() {
     profileScreenAfterLoginCubit = context.read<ProfileScreenAfterLoginCubit>();
+    setData();
+    setState(() {});
     super.initState();
+  }
+
+  Future<void> setData() async {
+    context.read<ProfileScreenAfterLoginCubit>().setData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppAppBar.afterLoginAppBar(
-          title: 'My Profile', isPrivacyPolicy: false, is_high_icon: false),
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: [
-            _profile_photo(),
-            _profile_buttons(
-                logoString: AppAssets.svg_shield,
-                name: 'Privacy Policy',
-                fun: () {
-                  profileScreenAfterLoginCubit.click_privacy_policy();
-                }),
-            _profile_buttons(
-                logoString: AppAssets.svg_logout,
-                name: 'Log Out',
-                fun: () => profileScreenAfterLoginCubit.click_log_out()),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.04,
-            ),
-            _build_chat_support(context: context)
-          ],
-        ),
-      ),
-    );
+        appBar: AppAppBar.afterLoginAppBar(
+            title: 'My Profile', isPrivacyPolicy: false, is_high_icon: false),
+        body: BlocBuilder<ProfileScreenAfterLoginCubit,
+            ProfileScreenAfterLoginState>(builder: (context, state) {
+          bool loading = state.loading;
+          return loading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    children: [
+                      _profile_photo(state: state),
+                      _profile_buttons(
+                          logoString: AppAssets.svg_shield,
+                          name: 'Privacy Policy',
+                          fun: () {
+                            profileScreenAfterLoginCubit.click_privacy_policy();
+                          }),
+                      _profile_buttons(
+                          logoString: AppAssets.svg_logout,
+                          name: 'Log Out',
+                          fun: () => profileScreenAfterLoginCubit.click_log_out(
+                              context: context)),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.04,
+                      ),
+                      _build_chat_support(context: context)
+                    ],
+                  ),
+                );
+        }));
   }
 
   Widget _build_chat_support({required BuildContext context}) {
@@ -142,7 +158,7 @@ class _ProfilePageAfterLoginState extends State<ProfilePageAfterLogin> {
     );
   }
 
-  Widget _profile_photo() {
+  Widget _profile_photo({required ProfileScreenAfterLoginState state}) {
     return Padding(
       padding: EdgeInsets.symmetric(
           vertical: MediaQuery.of(context).size.height * 0.03),
@@ -159,11 +175,13 @@ class _ProfilePageAfterLoginState extends State<ProfilePageAfterLogin> {
               borderRadius: BorderRadius.circular(
                   MediaQuery.of(context).size.width * 0.33),
               child: Container(
-                child: SvgPicture.asset(
-                  AppAssets.svg_default_profile_photo,
-                  fit: BoxFit
-                      .contain, // Use BoxFit.cover to ensure it fills the circle
-                ),
+                child: state.photo == null
+                    ? SvgPicture.asset(
+                        AppAssets.svg_default_profile_photo,
+                        fit: BoxFit
+                            .contain, // Use BoxFit.cover to ensure it fills the circle
+                      )
+                    : Image.network(state.photo!, fit: BoxFit.cover),
               ),
             ),
           ),
@@ -171,7 +189,7 @@ class _ProfilePageAfterLoginState extends State<ProfilePageAfterLogin> {
             height: MediaQuery.of(context).size.height * 0.03,
           ),
           Text(
-            'Sagar Dattatrey',
+            state.name,
             style: AppTextStyle.recharge_banner(
                     fontColor: AppColor.black, fontSize: 20)
                 .copyWith(fontWeight: FontWeight.w900),

@@ -32,6 +32,18 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>CFBundleURLTypes</key>
+    	<array>
+    		<dict>
+    			<key>CFBundleURLSchemes</key>
+    			<array>
+    				<string>app-1-48721560774-ios-f391d152af02c529c103c7</string>
+    				<string>com.googleusercontent.apps.48721560774-ba17dnigmffdctrt276h8v66rpf0ec9e</string>
+    			</array>
+    		</dict>
+    	</array>
+    	<key>ITSAppUsesNonExemptEncryption</key>
+    	<false/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
