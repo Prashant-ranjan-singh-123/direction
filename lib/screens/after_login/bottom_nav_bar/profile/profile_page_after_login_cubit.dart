@@ -10,20 +10,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../services/amplititude.dart';
 import '../../../../utils/log_events_name.dart';
 
-
-class ProfileScreenAfterLoginCubit extends Cubit<ProfileScreenAfterLoginState>{
-  ProfileScreenAfterLoginCubit() : super(ProfileScreenAfterLoginState(loading: true));
+class ProfileScreenAfterLoginCubit extends Cubit<ProfileScreenAfterLoginState> {
+  ProfileScreenAfterLoginCubit()
+      : super(ProfileScreenAfterLoginState(loading: true));
 
   Future<void> click_log_out({required BuildContext context}) async {
-    await AppUserDataLogic.log_out();
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => LoginCheckScreen()), // Directly instantiate the screen
-          (Route<dynamic> route) => false, // This removes all previous routes
-    );
+    confirm_logout(context: context);
   }
 
-  void click_privacy_policy(){
+  void click_privacy_policy() {
     AppOpener.launchPrivacyPolicy();
   }
 
@@ -32,20 +27,71 @@ class ProfileScreenAfterLoginCubit extends Cubit<ProfileScreenAfterLoginState>{
         .logEvent(event: LogEventsName.instance().click_help);
     await AppOpener.launchAppUsingUrl(
         link:
-        'https://wa.me/+917993478539?text=Hey,%20I%20downloaded%20direction%20-%20I%20am%20having%20a%20problem');
+            'https://wa.me/+917993478539?text=Hey,%20I%20downloaded%20direction%20-%20I%20am%20having%20a%20problem');
   }
 
-  void setData() async {
+  Future<void> setData() async {
     emit(state.copyWith(loading: true));
 
-    String? image = await AppUserDataLogic.get_image_url();
-    String? Name = await AppUserDataLogic.get_name();
+    final result = await Future.wait([
+      AppUserDataLogic.get_image_url(),
+      AppUserDataLogic.get_name(),
+    ]);
 
-    if (Name != null) {
-      emit(state.copyWith(loading: false, name: Name, photo: image));
+    String? image = result[0];
+    String? name = result[1];
+
+    if (name != null) {
+      emit(state.copyWith(loading: false, name: name, photo: image));
     } else {
-      emit(state.copyWith(loading: false, name: 'Sagar Dattatrey', photo: null));
+      emit(
+          state.copyWith(loading: false, name: 'Sagar Dattatrey', photo: null));
     }
   }
 
+  void confirm_logout({required BuildContext context}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog.adaptive(
+          title: Text('Confirm Logout'),
+          content: Text('Are you sure you want to log out?'),
+          actions: [
+            TextButton(
+              style:
+                  TextButton.styleFrom(splashFactory: NoSplash.splashFactory),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            TextButton(
+              style:
+                  TextButton.styleFrom(splashFactory: NoSplash.splashFactory),
+              onPressed: () async {
+                Navigator.of(context).pop(); // Close the dialog
+                await AppUserDataLogic.log_out();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LoginCheckScreen()), // Directly instantiate the screen
+                  (Route<dynamic> route) =>
+                      false, // This removes all previous routes
+                );
+              },
+              child: Text(
+                'Logout',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

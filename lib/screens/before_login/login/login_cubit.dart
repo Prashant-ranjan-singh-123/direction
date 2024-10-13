@@ -13,9 +13,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit() : super(LoginState());
+  LoginCubit() : super(LoginState(false));
 
   Future<void> continue_with_google({required BuildContext context}) async {
+    emit(state.copyWith(loading: true));
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     try {
@@ -23,6 +24,7 @@ class LoginCubit extends Cubit<LoginState> {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser == null) {
+        emit(state.copyWith(loading: false));
         // The user canceled the sign-in
         return;
       }
@@ -51,6 +53,7 @@ class LoginCubit extends Cubit<LoginState> {
           uuid: uuid ?? '',
           image_url: image_url ?? '',
           email: email ?? '');
+      emit(state.copyWith(loading: false));
 
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => MultiBlocProvider(providers: [
@@ -65,6 +68,7 @@ class LoginCubit extends Cubit<LoginState> {
             ),
           ], child: BottomNavBarMain(),)));
     } catch (error) {
+      emit(state.copyWith(loading: false));
       print(error);
     }
   }

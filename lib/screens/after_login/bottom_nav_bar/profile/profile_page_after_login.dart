@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:direction/main.dart';
 import 'package:direction/screens/after_login/bottom_nav_bar/profile/profile_page_after_login_cubit.dart';
 import 'package:direction/screens/after_login/bottom_nav_bar/profile/profile_screen_after_login_state.dart';
@@ -9,6 +10,7 @@ import 'package:iconly/iconly.dart';
 import '../../../../services/amplititude.dart';
 import '../../../../services/other_app_opener.dart';
 import '../../../../shared/app_bar.dart';
+import '../../../../shared/circular_progress_indicator.dart';
 import '../../../../utils/app_asset.dart';
 import '../../../../utils/app_color.dart';
 import '../../../../utils/log_events_name.dart';
@@ -47,7 +49,7 @@ class _ProfilePageAfterLoginState extends State<ProfilePageAfterLogin> {
           bool loading = state.loading;
           return loading
               ? Center(
-                  child: CircularProgressIndicator(),
+                  child: AdaptiveCircularProgressIndicator(),
                 )
               : SizedBox(
                   height: MediaQuery.of(context).size.height,
@@ -181,7 +183,20 @@ class _ProfilePageAfterLoginState extends State<ProfilePageAfterLogin> {
                         fit: BoxFit
                             .contain, // Use BoxFit.cover to ensure it fills the circle
                       )
-                    : Image.network(state.photo!, fit: BoxFit.cover),
+                    : CachedNetworkImage(
+                        imageUrl: state.photo!,
+                        fit: BoxFit.cover,
+                        progressIndicatorBuilder: (context, url, progress) =>
+                            Center(
+                          child: AdaptiveCircularProgressIndicator(
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => SvgPicture.asset(
+                          AppAssets.svg_default_profile_photo,
+                          fit: BoxFit
+                              .contain, // Use BoxFit.cover to ensure it fills the circle
+                        ),
+                      ),
               ),
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:direction/screens/before_login/login/login_cubit.dart';
 import 'package:direction/screens/before_login/login/login_state.dart';
 import 'package:direction/services/other_app_opener.dart';
+import 'package:direction/shared/circular_progress_indicator.dart';
 import 'package:direction/utils/app_asset.dart';
 import 'package:direction/utils/app_color.dart';
 import 'package:direction/utils/text_style.dart';
@@ -17,7 +18,27 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColor.primary, body: _design_2(context: context));
+      backgroundColor: AppColor.primary,
+      body: BlocBuilder<LoginCubit, LoginState>(
+        builder: (BuildContext context, state) {
+          if (state.loading) {
+            return Stack(
+              children: [
+                _design_2(context: context),
+                Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    color: Colors.black.withOpacity(0.4),
+                    child: AdaptiveCircularProgressIndicator(
+                        ProgressIndicatorColor: Colors.white))
+              ],
+            );
+          } else {
+            return _design_2(context: context);
+          }
+        },
+      ),
+    );
   }
 
   Widget _logo() {
