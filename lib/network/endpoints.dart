@@ -11,9 +11,12 @@ class EndPoints{
 
   Future<Response> direction() async {
     try{
+      print('error 1');
       Response response = await dioClient.dio().get('/direction');
+      print('error 2');
       return response;
     }on DioException catch (e){
+      print('error');
       return e.response!;
     }
   }

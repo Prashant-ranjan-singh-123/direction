@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:direction/screens/before_login/login/login_cubit.dart';
 import 'package:direction/screens/before_login/login/login_state.dart';
 import 'package:direction/services/other_app_opener.dart';
@@ -29,8 +31,10 @@ class LoginScreen extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,
                     color: Colors.black.withOpacity(0.4),
-                    child: AdaptiveCircularProgressIndicator(
-                        ProgressIndicatorColor: Colors.white))
+                    child: Center(
+                      child: AdaptiveCircularProgressIndicator(
+                              ProgressIndicatorColor: Colors.white),
+                    ))
               ],
             );
           } else {

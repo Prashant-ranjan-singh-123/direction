@@ -502,10 +502,10 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
       'currency': 'INR', // Specify the currency
       'name': 'Direction',
       'description': 'Recharge Plan Activation',
-      'prefill': {
-        'contact': '+917993478539',
-        'email': 'aarihantaaryan@gmail.com'
-      }
+      // 'prefill': {
+      //   'contact': '+917993478539',
+      //   'email': 'aarihantaaryan@gmail.com'
+      // }
     };
     _pay_transiction = money;
     _razorpay.open(options);

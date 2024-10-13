@@ -44,13 +44,15 @@ class _PrashantAppOpenPermissionState extends State<PrashantAppOpenPermission> {
   }
 
   Widget _buildUI({required bool isLoading, required int canLoad}) {
-    if (isLoading || canLoad == 0) {
-      return SplashScreenHere(context: context);
-    } else if (canLoad == 1) {
+    if (canLoad == 1) {
+      print('open_app');
       return BlocProvider(
         create: (context) => SplashScreenCubit(),
         child: SplashScreen(),
       );
+    }else if (isLoading || canLoad == 0) {
+      print('waiting open_app');
+      return SplashScreenHere(context: context);
     } else {
       // In case of canLoad == 2, return a placeholder or another screen
       return _error_screen();
