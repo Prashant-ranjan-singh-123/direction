@@ -6,11 +6,14 @@ import 'package:direction/screens/after_login/bottom_nav_bar_main.dart';
 import 'package:direction/screens/before_login/login/login_state.dart';
 import 'package:direction/services/app_user_data_logic.dart';
 import 'package:direction/services/other_app_opener.dart';
+import 'package:direction/utils/log_events_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import '../../../services/amplititude.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginState(false));
@@ -56,18 +59,24 @@ class LoginCubit extends Cubit<LoginState> {
           email: email ?? '');
       emit(state.copyWith(loading: false));
 
+      MyAppAmplitudeAndFirebaseAnalitics.instanse()
+          .logEvent(event: LogEventsName.instance().login_sucess_google);
+
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => MultiBlocProvider(providers: [
-            BlocProvider(
-              create: (context) => BottomNavBarCubit(),
-            ),
-            BlocProvider(
-              create: (context) => HomePageCubit(),
-            ),
-            BlocProvider(
-              create: (context) => ProfileScreenAfterLoginCubit(),
-            ),
-          ], child: BottomNavBarMain(),)));
+          builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => BottomNavBarCubit(),
+                  ),
+                  BlocProvider(
+                    create: (context) => HomePageCubit(),
+                  ),
+                  BlocProvider(
+                    create: (context) => ProfileScreenAfterLoginCubit(),
+                  ),
+                ],
+                child: BottomNavBarMain(),
+              )));
     } catch (error) {
       emit(state.copyWith(loading: false));
       print(error);

@@ -8,6 +8,7 @@ class LogEventsName{
   String install = 'install';
   String click_home = 'click_home';
   String click_call_now_recharge_alert = 'click_call_now_recharge_alert';
+  String login_sucess_google='login_sucess_google';
 
   LogEventsName._privateConstructor();
   static LogEventsName instance(){

@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'firebase_options.dart';
 import 'screens/after_login/bottom_nav_bar/profile/profile_page_after_login_cubit.dart';
@@ -19,6 +20,10 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // ZIMKit().init(
+  //   appID: 385565720, // your appid
+  //   appSign: '99db2a4115fc9f34062ddefafe15abab0ffb272fea768e6248ad2b926f09a630', // your appSign
+  // );
   runApp(AppStarter());
 }
 
