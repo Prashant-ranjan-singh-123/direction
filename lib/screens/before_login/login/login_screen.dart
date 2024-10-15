@@ -205,33 +205,36 @@ class LoginScreen extends StatelessWidget {
                       top: false,
                       right: false,
                       left: false,
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'By signing in, you agree to our ',
-                              style: AppTextStyle.body1(
-                                  fontColor: Colors.black, fontSize: 12),
-                            ),
-                            TextSpan(
-                              text: 'Terms & Conditions',
-                              style: TextStyle(
-                                fontSize: 14,
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.black,
-                                fontFamily: AppFonts.gilroy_light,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'By signing in, you agree to our ',
+                                style: AppTextStyle.body1(
+                                    fontColor: Colors.black, fontSize: 12),
                               ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  // Handle the tap event here
-                                  context
-                                      .read<LoginCubit>()
-                                      .open_terms_and_condition();
-                                  // Navigate to the terms and conditions page
-                                },
-                            ),
-                          ],
+                              TextSpan(
+                                text: 'Terms & Conditions',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.black,
+                                  fontFamily: AppFonts.gilroy_light,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    // Handle the tap event here
+                                    context
+                                        .read<LoginCubit>()
+                                        .open_terms_and_condition();
+                                    // Navigate to the terms and conditions page
+                                  },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     )

@@ -20,6 +20,7 @@ class LoginCubit extends Cubit<LoginState> {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     try {
+      await _googleSignIn.signOut();
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 

@@ -530,7 +530,6 @@ class _RechargePageAfterLoginState extends State<RechargePageAfterLogin> {
           builder: (context) => CompleteScreen(
                 amount_to_save: null,
               )));
-      // Log the payment success
       print("Payment successful: ${response.paymentId}");
     } else {
       print("Transaction amount is not set.");
