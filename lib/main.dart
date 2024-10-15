@@ -20,10 +20,10 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // ZIMKit().init(
-  //   appID: 385565720, // your appid
-  //   appSign: '99db2a4115fc9f34062ddefafe15abab0ffb272fea768e6248ad2b926f09a630', // your appSign
-  // );
+  ZIMKit().init(
+    appID: 385565720, // your appid
+    appSign: '99db2a4115fc9f34062ddefafe15abab0ffb272fea768e6248ad2b926f09a630', // your appSign
+  );
   runApp(AppStarter());
 }
 
