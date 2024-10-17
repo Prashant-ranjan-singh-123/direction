@@ -29,6 +29,7 @@ Future<void> main() async {
 
 class AppStarter extends StatelessWidget {
   const AppStarter({super.key});
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
