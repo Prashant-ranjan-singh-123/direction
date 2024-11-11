@@ -70,17 +70,37 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
   }
 
   void _call_now() {
-    if(_totalBalance<=0) {
+    if (_totalBalance <= 0) {
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            contentPadding: const EdgeInsets.only(
-                top: 0, left: 0, right: 0, bottom: 10),
+            contentPadding:
+                const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 10),
             backgroundColor: AppColor.white,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                  22.0), // Adjust the radius as needed
+              borderRadius:
+                  BorderRadius.circular(22.0), // Adjust the radius as needed
+            ),
+            content: const Dialogboxhome(),
+          );
+        },
+      );
+    }
+  }
+
+  void _chat_now() {
+    if (_totalBalance <= 0) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            contentPadding:
+            const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 10),
+            backgroundColor: AppColor.white,
+            shape: RoundedRectangleBorder(
+              borderRadius:
+              BorderRadius.circular(22.0), // Adjust the radius as needed
             ),
             content: const Dialogboxhome(),
           );
@@ -315,44 +335,84 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                 ),
                               ),
                               SizedBox(height: 10),
-                              SizedBox(
-                                width: double.infinity,
-                                height: 40,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColor.secondary,
-                                    elevation: 0,
-                                    shadowColor: AppColor.secondary,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(7),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 40,
+                                      child: OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          // backgroundColor: AppColor.secondary,
+                                          side: BorderSide(color: AppColor.secondary),
+                                          foregroundColor: AppColor.primary,
+                                          elevation: 0,
+                                          shadowColor: AppColor.primary,
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                                color: AppColor.primary),
+                                            borderRadius:
+                                                BorderRadius.circular(7),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          _call_now();
+                                          MyAppAmplitudeAndFirebaseAnalitics
+                                                  .instanse()
+                                              .logEvent(
+                                                  event:
+                                                      LogEventsName.instance()
+                                                          .click_call_now);
+                                          // Handle recharge logic
+                                        },
+                                        child: AutoSizeText(
+                                          'Call',
+                                          maxLines: 2,
+                                          minFontSize: 6,
+                                          style: AppTextStyle.body1(
+                                              fontColor: AppColor.secondary,
+                                              fontSize: 15),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  onPressed: () {
-                                    _call_now();
-                                    MyAppAmplitudeAndFirebaseAnalitics
-                                            .instanse()
-                                        .logEvent(
-                                            event: LogEventsName.instance()
-                                                .click_call_now);
-                                    // Handle recharge logic
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(IconlyBold.call,
-                                          color: AppColor.white, size: 18),
-                                      SizedBox(width: 10),
-                                      AutoSizeText(
-                                        'Call Now',
-                                        maxLines: 2,
-                                        minFontSize: 6,
-                                        style: AppTextStyle.body1(
-                                            fontColor: AppColor.white,
-                                            fontSize: 15),
-                                      ),
-                                    ],
+                                  SizedBox(
+                                    width: 8,
                                   ),
-                                ),
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 40,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColor.secondary,
+                                          elevation: 0,
+                                          shadowColor: AppColor.secondary,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(7),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          _chat_now();
+                                          MyAppAmplitudeAndFirebaseAnalitics
+                                                  .instanse()
+                                              .logEvent(
+                                                  event:
+                                                      LogEventsName.instance()
+                                                          .click_call_now);
+                                          // Handle recharge logic
+                                        },
+                                        child: AutoSizeText(
+                                          'Chat',
+                                          maxLines: 2,
+                                          minFontSize: 6,
+                                          style: AppTextStyle.body1(
+                                              fontColor: AppColor.white,
+                                              fontSize: 15),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
