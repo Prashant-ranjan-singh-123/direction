@@ -10,6 +10,7 @@ class Astrologer {
   String helped;
   String imageUrl;
 
+
   Astrologer({
     required this.name,
     required this.fee,
