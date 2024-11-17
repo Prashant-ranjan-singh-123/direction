@@ -1,7 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:direction/model/astrologer_model.dart';
 import 'package:direction/screens/after_login/bottom_nav_bar/home/home_page_cubit.dart';
+import 'package:direction/screens/after_login/bottom_nav_bar/home/home_page_state.dart';
 import 'package:direction/screens/after_login/bottom_nav_bar_cubit.dart';
+import 'package:direction/screens/before_login/login/login_cubit.dart';
 import 'package:direction/services/shared_preference.dart';
 import 'package:direction/shared/app_bar.dart';
 import 'package:direction/utils/app_asset.dart';
@@ -28,93 +30,27 @@ class HomePageAfterLogin extends StatefulWidget {
 
 class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
   late int _totalBalance;
-  late bool _isLoading;
   late bool _isIndia;
 
   @override
   void initState() {
     super.initState();
-    setData();
-  }
-
-  Future<void> setData() async {
-    setState(() {
-      _isLoading = true;
-    });
-    if ('IN' == await SharedPreferenceLogic.getCountryCode()) {
-      _isIndia = true;
-      _totalBalance = await SharedPreferenceLogic.getCounter(isIn: true);
-    } else {
-      _isIndia = false;
-      _totalBalance = await SharedPreferenceLogic.getCounter(isIn: false);
-    }
-    // _isIndia=false;
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
-  void _recharge_now() {
-    MyAppAmplitudeAndFirebaseAnalitics.instanse()
-        .logEvent(event: LogEventsName.instance().click_recharge_home_screen);
-    Navigator.of(context).pushReplacement(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => BlocProvider(
-          create: (context) => BottomNavBarCubit(),
-          child: BottomNavBarMain(initialPage: 1),
-        ),
-        transitionDuration: Duration.zero,
-        reverseTransitionDuration: Duration.zero,
-      ),
-    );
-  }
-
-  void _call_now() {
-    if (_totalBalance <= 0) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            contentPadding:
-                const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 10),
-            backgroundColor: AppColor.white,
-            shape: RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.circular(22.0), // Adjust the radius as needed
-            ),
-            content: const Dialogboxhome(),
-          );
-        },
-      );
-    }
-  }
-
-  void _chat_now() {
-    if (_totalBalance <= 0) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            contentPadding:
-            const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 10),
-            backgroundColor: AppColor.white,
-            shape: RoundedRectangleBorder(
-              borderRadius:
-              BorderRadius.circular(22.0), // Adjust the radius as needed
-            ),
-            content: const Dialogboxhome(),
-          );
-        },
-      );
-    }
+    context.read<HomePageCubit>().setData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppAppBar.afterLoginAppBar(title: 'Hello', is_high_icon: true),
-      body: _isLoading ? _loading() : _buildUi(),
-    );
+        appBar: AppAppBar.afterLoginAppBar(title: 'Hello', is_high_icon: true),
+        body: BlocBuilder<HomePageCubit, HomePageState>(
+          builder: (context, state) {
+            bool loading = state.isLoading;
+            _isIndia = state.isIndia;
+            print('is India: ${_isIndia}');
+            _totalBalance = state.totalBalance;
+            return loading ? _loading() : _buildUi();
+          },
+        ));
   }
 
   Widget _buildUi() {
@@ -136,6 +72,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
   }
 
   Widget _topBalanceShow({required int balance}) {
+    print(_isIndia);
     return Column(
       children: [
         Divider(
@@ -165,7 +102,11 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                    onPressed: _recharge_now,
+                    onPressed: () {
+                      context
+                          .read<HomePageCubit>()
+                          .recharge_now(context: context);
+                    },
                     child: Text(
                       'Recharge Now',
                       style: AppTextStyle.body1(
@@ -343,7 +284,8 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                       child: OutlinedButton(
                                         style: OutlinedButton.styleFrom(
                                           // backgroundColor: AppColor.secondary,
-                                          side: BorderSide(color: AppColor.secondary),
+                                          side: BorderSide(
+                                              color: AppColor.secondary),
                                           foregroundColor: AppColor.primary,
                                           elevation: 0,
                                           shadowColor: AppColor.primary,
@@ -355,13 +297,11 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                           ),
                                         ),
                                         onPressed: () {
-                                          _call_now();
-                                          MyAppAmplitudeAndFirebaseAnalitics
-                                                  .instanse()
-                                              .logEvent(
-                                                  event:
-                                                      LogEventsName.instance()
-                                                          .click_call_now);
+                                          context
+                                              .read<HomePageCubit>()
+                                              .call_now(
+                                                  context: context,
+                                                  total_balance: _totalBalance);
                                           // Handle recharge logic
                                         },
                                         child: AutoSizeText(
@@ -392,13 +332,11 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                           ),
                                         ),
                                         onPressed: () {
-                                          _chat_now();
-                                          MyAppAmplitudeAndFirebaseAnalitics
-                                                  .instanse()
-                                              .logEvent(
-                                                  event:
-                                                      LogEventsName.instance()
-                                                          .click_call_now);
+                                          context
+                                              .read<HomePageCubit>()
+                                              .chat_now(
+                                                  context: context,
+                                                  total_balance: _totalBalance);
                                           // Handle recharge logic
                                         },
                                         child: AutoSizeText(

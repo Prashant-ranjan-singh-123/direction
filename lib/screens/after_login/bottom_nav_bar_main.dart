@@ -1,4 +1,5 @@
 import 'package:direction/screens/after_login/bottom_nav_bar/home/home_page_after_login.dart';
+import 'package:direction/screens/after_login/bottom_nav_bar/home/home_page_cubit.dart';
 import 'package:direction/screens/after_login/bottom_nav_bar/recharge/recharge_page_after_login.dart';
 import 'package:direction/services/amplititude.dart';
 import 'package:direction/utils/log_events_name.dart';
@@ -29,7 +30,8 @@ class BottomNavBarMain extends StatelessWidget {
               return _buildBody(state.currentIndex);
             },
           ),
-          bottomNavigationBar: BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
+          bottomNavigationBar:
+              BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
             builder: (context, state) {
               return _buildBottomNavigationBar(context, state.currentIndex);
             },
@@ -43,8 +45,11 @@ class BottomNavBarMain extends StatelessWidget {
     if (currentIndex == 0) {
       MyAppAmplitudeAndFirebaseAnalitics.instanse()
           .logEvent(event: LogEventsName.instance().click_home);
-      return HomePageAfterLogin();
-    }else if(currentIndex ==1){
+      return BlocProvider(
+        create: (context) => HomePageCubit(),
+        child: HomePageAfterLogin(),
+      );
+    } else if (currentIndex == 1) {
       return RechargePageAfterLogin();
     } else {
       return ProfilePageAfterLogin();
@@ -79,7 +84,8 @@ class BottomNavBarMain extends StatelessWidget {
       onTap: (page) {
         context.read<BottomNavBarCubit>().updatePage(page);
       },
-      currentIndex: currentIndex,  // Make sure this is reading from the updated state
+      currentIndex:
+          currentIndex, // Make sure this is reading from the updated state
     );
   }
 }

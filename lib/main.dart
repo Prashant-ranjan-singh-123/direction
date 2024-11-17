@@ -22,8 +22,8 @@ Future<void> main() async {
   );
   ZIMKit().init(
 
-    appID: 385565720, // your appid
-    appSign: '99db2a4115fc9f34062ddefafe15abab0ffb272fea768e6248ad2b926f09a630', // your appSign
+    appID: 835939070, // your appid
+    appSign: 'a97fcf34bca5ccc4d49cc9efe64d2689a105345d1f5fcbf3df8feac4f75d9297',
   );
   runApp(AppStarter());
 }
