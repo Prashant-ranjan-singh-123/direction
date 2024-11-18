@@ -21,7 +21,6 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   ZIMKit().init(
-
     appID: 835939070, // your appid
     appSign: 'a97fcf34bca5ccc4d49cc9efe64d2689a105345d1f5fcbf3df8feac4f75d9297',
   );

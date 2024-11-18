@@ -336,7 +336,9 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                               .read<HomePageCubit>()
                                               .chat_now(
                                                   context: context,
-                                                  total_balance: _totalBalance);
+                                                  total_balance: _totalBalance,
+                                                  userId: data.userId,
+                                                  UserName: data.userName);
                                           // Handle recharge logic
                                         },
                                         child: AutoSizeText(

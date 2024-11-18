@@ -2,6 +2,7 @@ import 'package:direction/screens/after_login/bottom_nav_bar/home/home_page_stat
 import 'package:direction/screens/after_login/bottom_nav_bar_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 import '../../../../services/amplititude.dart';
 import '../../../../services/shared_preference.dart';
@@ -10,11 +11,13 @@ import '../../../../utils/log_events_name.dart';
 import '../../bottom_nav_bar_main.dart';
 import 'dialog_box/DialogBoxHome.dart';
 
-class HomePageCubit extends Cubit<HomePageState>{
-  HomePageCubit():super (HomePageState(totalBalance: 0, isLoading: true, isIndia: false));
+class HomePageCubit extends Cubit<HomePageState> {
+  HomePageCubit()
+      : super(HomePageState(totalBalance: 0, isLoading: true, isIndia: false));
 
   Future<void> setData() async {
     emit(state.copyWith(isLoading: true));
+
     int _totalBalance;
     if ('IN' == await SharedPreferenceLogic.getCountryCode()) {
       // await SharedPreferenceLogic.saveCounter(counter: 20000);
@@ -27,44 +30,15 @@ class HomePageCubit extends Cubit<HomePageState>{
     emit(state.copyWith(isLoading: false));
   }
 
-  void chat_now({required BuildContext context, required int total_balance}) {
-    // Log Analytics
-    MyAppAmplitudeAndFirebaseAnalitics
-        .instanse()
-        .logEvent(
-        event:
-        LogEventsName.instance()
-            .click_call_now);
-
-
-    if (total_balance <= 0) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            contentPadding:
-            const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 10),
-            backgroundColor: AppColor.white,
-            shape: RoundedRectangleBorder(
-              borderRadius:
-              BorderRadius.circular(22.0), // Adjust the radius as needed
-            ),
-            content: const Dialogboxhome(),
-          );
-        },
-      );
-    }else{
-
-    }
-  }
-
-  void call_now({required BuildContext context, required int total_balance}) {
-    MyAppAmplitudeAndFirebaseAnalitics
-        .instanse()
-        .logEvent(
-        event:
-        LogEventsName.instance()
-            .click_call_now);
+  Future<void> chat_now(
+      {required BuildContext context,
+      required int total_balance,
+      required String userId,
+      required String UserName}) async {
+    // TODO (make field for click chat now)
+    // Log Analytics {ignore it for now}
+    MyAppAmplitudeAndFirebaseAnalitics.instanse()
+        .logEvent(event: LogEventsName.instance().click_call_now);
 
     if (total_balance <= 0) {
       showDialog(
@@ -72,19 +46,63 @@ class HomePageCubit extends Cubit<HomePageState>{
         builder: (context) {
           return AlertDialog(
             contentPadding:
-            const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 10),
+                const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 10),
             backgroundColor: AppColor.white,
             shape: RoundedRectangleBorder(
               borderRadius:
-              BorderRadius.circular(22.0), // Adjust the radius as needed
+                  BorderRadius.circular(22.0), // Adjust the radius as needed
             ),
             content: const Dialogboxhome(),
           );
         },
       );
     } else {
+      try {
+        await ZIMKit().connectUser(id: 'prashant@gmail.com', name: 'Prashant');
+        // ZIMKit().(context);
+        if(ZIMKitCore.instance.isInited) {
+          print('ZIMKitCore.instance.isInited is Inited');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return ZIMKitMessageListPage(
+                  conversationID: userId,
+                  conversationType: ZIMConversationType.room,
+                );
+              },
+            ),
+          );
+        }else{
+          print('ZIMKitCore.instance.isInited is not Inited');
+        }
+      } catch (e) {
 
+      }
     }
+  }
+
+  void call_now({required BuildContext context, required int total_balance}) {
+    MyAppAmplitudeAndFirebaseAnalitics.instanse()
+        .logEvent(event: LogEventsName.instance().click_call_now);
+
+    if (total_balance <= 0) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            contentPadding:
+                const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 10),
+            backgroundColor: AppColor.white,
+            shape: RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(22.0), // Adjust the radius as needed
+            ),
+            content: const Dialogboxhome(),
+          );
+        },
+      );
+    } else {}
   }
 
   void recharge_now({required BuildContext context}) {

@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.direction"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -25,7 +25,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 23
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 34
         versionCode = 12
         versionName = "1.1.1"
     }
@@ -46,6 +46,8 @@ flutter {
 
 dependencies {
     implementation "com.android.billingclient:billing:7.1.1"  // Play Billing Library
+//    implementation 'com.github.ZEGOCLOUD:zego_inapp_chat_uikit_android:+'    // add this line in your module-level build.gradle file's dependencies, usually named [app].
+
 }
 
 configurations.all {

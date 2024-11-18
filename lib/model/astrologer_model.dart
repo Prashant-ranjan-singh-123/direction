@@ -9,18 +9,20 @@ class Astrologer {
   String expertise;
   String helped;
   String imageUrl;
+  String userName;
+  String userId;
 
-
-  Astrologer({
-    required this.name,
-    required this.fee,
-    required this.highFee,
-    required this.expertise,
-    required this.helped,
-    required this.imageUrl,
-    required this.feeUsa,
-    required this.highfeeUsa
-  });
+  Astrologer(
+      {required this.name,
+      required this.fee,
+      required this.highFee,
+      required this.expertise,
+      required this.helped,
+      required this.imageUrl,
+      required this.feeUsa,
+      required this.highfeeUsa,
+      required this.userName,
+      required this.userId});
 }
 
 class AstrologerModel {
@@ -34,6 +36,8 @@ class AstrologerModel {
       imageUrl: AppAssets.png_astrologer_1,
       highFee: '70',
       highfeeUsa: '5',
+      userName: 'Pastor',
+      userId: 'Pastor Joseph Fernandez',
     ),
     // Add more unique astrologers as needed
     Astrologer(
@@ -45,6 +49,8 @@ class AstrologerModel {
       highFee: '25',
       feeUsa: '1/min',
       highfeeUsa: '3',
+      userName: 'Father',
+      userId: 'Father Daniel Jones',
     ),
 
     Astrologer(
@@ -56,6 +62,8 @@ class AstrologerModel {
       highFee: '30',
       feeUsa: '1/min',
       highfeeUsa: '5',
+      userName: 'Brother',
+      userId: 'Brother Ramesh Babu',
     ),
 
     Astrologer(
@@ -67,6 +75,8 @@ class AstrologerModel {
       highFee: '20',
       feeUsa: '1/min',
       highfeeUsa: '3',
+      userName: 'Sister',
+      userId: 'Sister Leena Daisy',
     ),
 
     Astrologer(
@@ -78,6 +88,8 @@ class AstrologerModel {
       highFee: '35',
       feeUsa: '1/min',
       highfeeUsa: '5',
+      userName: 'Rebecca',
+      userId: 'Pastor Rebecca Rosy',
     ),
   ];
 }
