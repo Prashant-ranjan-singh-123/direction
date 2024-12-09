@@ -1,3 +1,5 @@
+import 'package:direction/screens/after_login/bottom_nav_bar/home/chat_screen/chat_cubit.dart';
+import 'package:direction/screens/after_login/bottom_nav_bar/home/chat_screen/chat_screen.dart';
 import 'package:direction/screens/after_login/bottom_nav_bar/home/home_page_state.dart';
 import 'package:direction/screens/after_login/bottom_nav_bar_cubit.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +36,8 @@ class HomePageCubit extends Cubit<HomePageState> {
       {required BuildContext context,
       required int total_balance,
       required String userId,
-      required String UserName}) async {
+      required String UserName,
+      required String image}) async {
     // TODO (make field for click chat now)
     // Log Analytics {ignore it for now}
     MyAppAmplitudeAndFirebaseAnalitics.instanse()
@@ -58,27 +61,33 @@ class HomePageCubit extends Cubit<HomePageState> {
       );
     } else {
       try {
-        await ZIMKit().connectUser(id: 'prashant@gmail.com', name: 'Prashant');
-        // ZIMKit().(context);
-        if(ZIMKitCore.instance.isInited) {
-          print('ZIMKitCore.instance.isInited is Inited');
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return ZIMKitMessageListPage(
-                  conversationID: userId,
-                  conversationType: ZIMConversationType.room,
-                );
-              },
-            ),
-          );
-        }else{
-          print('ZIMKitCore.instance.isInited is not Inited');
-        }
-      } catch (e) {
-
-      }
+        // await ZIMKit().connectUser(id: 'prashant@gmail.com', name: 'Prashant');
+        // // ZIMKit().(context);h
+        // if(ZIMKitCore.instance.isInited) {
+        //   print('ZIMKitCore.instance.isInited is Inited');
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) {
+        //         return ZIMKitMessageListPage(
+        //           conversationID: userId,
+        //           conversationType: ZIMConversationType.room,
+        //         );
+        //       },
+        //     ),
+        //   );
+        // }else{
+        //   print('ZIMKitCore.instance.isInited is not Inited');
+        // }
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                  create: (context) => ChatCubit(),
+                  child: ChatScreen(
+                    astrologer_name: UserName,
+                    image: image,
+                  ),
+                )));
+      } catch (e) {}
     }
   }
 

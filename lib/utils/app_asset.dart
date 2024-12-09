@@ -32,8 +32,10 @@ class AppAssets{
   static String svg_loading = 'asset/images/svg/loading.svg';
   static String svg_error = 'asset/images/svg/error.svg';
   static String svg_success = 'asset/images/svg/payment_success.svg';
+  static String svg_empty_chat = 'asset/images/svg/empty_chat.svg';
 
 
   static String lottie_no_internet = 'asset/images/lottie/no_internet.json';
   static String lottie_construction = 'asset/images/lottie/construction.json';
+  static String lottie_loading_chat = 'asset/images/lottie/loading_chat.json';
 }

@@ -13,27 +13,47 @@ class AppAppBar {
       {required String title,
       bool is_high_icon = true,
       bool isBoldHead = false,
-      bool isPrivacyPolicy = false}) {
+      bool isPrivacyPolicy = false,
+      String? imageUrl
+      }) {
     return AppBar(
       centerTitle: false,
-      title: Row(
-        children: [
-          if (is_high_icon)
-            Padding(
-              padding: const EdgeInsets.only(right: 15),
-              child: SvgPicture.asset(AppAssets.svg_hello),
-            )
-          else
-            SizedBox(),
-          Text(
-            title,
-            style: isBoldHead
-                ? AppTextStyle.h1(fontColor: AppColor.primary, fontSize: 20)
-                    .copyWith(fontWeight: FontWeight.w900)
-                : AppTextStyle.body1(fontColor: AppColor.primary, fontSize: 20)
-                    .copyWith(fontWeight: FontWeight.w900),
-          ),
-        ],
+      title: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            if(imageUrl!=null)
+              Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: CircleAvatar(
+                  child: ClipOval(
+                    child: Image.asset(
+                      imageUrl,
+                      fit: BoxFit.cover, // Use BoxFit.cover to fill the CircleAvatar
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                  ),
+                ),
+              ),
+        
+            if (is_high_icon)
+              Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: SvgPicture.asset(AppAssets.svg_hello),
+              )
+            else
+              SizedBox(),
+            Text(
+              title,
+              style: isBoldHead
+                  ? AppTextStyle.h1(fontColor: AppColor.primary, fontSize: 20)
+                      .copyWith(fontWeight: FontWeight.w900)
+                  : AppTextStyle.body1(fontColor: AppColor.primary, fontSize: 20)
+                      .copyWith(fontWeight: FontWeight.w900),
+            ),
+          ],
+        ),
       ),
       actions: [
         isPrivacyPolicy

@@ -338,7 +338,9 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin> {
                                                   context: context,
                                                   total_balance: _totalBalance,
                                                   userId: data.userId,
-                                                  UserName: data.userName);
+                                                  UserName: data.name,
+                                                  image: data.imageUrl,
+                                          );
                                           // Handle recharge logic
                                         },
                                         child: AutoSizeText(
