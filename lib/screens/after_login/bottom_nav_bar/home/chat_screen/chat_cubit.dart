@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../services/app_user_data_logic.dart';
@@ -9,17 +10,22 @@ import 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   ChatCubit()
-      : super(ChatState(gmail_uuid: '', astrologer_name: '', loading: true));
+      : super(ChatState(
+            gmail: '', astrologer_name: '', loading: true, image_url: ''));
 
   Future<void> getData({required String astrologer_name}) async {
     emit(state.copyWith(loading: true));
     // _gmail_name = await AppUserDataLogic.get_name() ?? '';
-    String _gmail_uuid = await AppUserDataLogic.get_uuid() ?? '';
+    // String _gmail_uuid = await AppUserDataLogic.get_uuid() ?? '';
+    String _gmail_email = await AppUserDataLogic.get_email() ?? '';
+    String _image_url = await AppUserDataLogic.get_image_url() ?? '';
     String _astrologer_name =
         astrologer_name.toLowerCase().replaceAll(' ', '_');
+    // 'hello';
     emit(state.copyWith(
         loading: false,
-        gmail_uuid: _gmail_uuid,
+        gmail_uuid: _gmail_email,
+        image_url: _image_url,
         astrologer_name: _astrologer_name));
   }
 
@@ -31,43 +37,44 @@ class ChatCubit extends Cubit<ChatState> {
     return DateFormat('hh:mm a').format(dateTime);
   }
 
-  // void _sendMessageFromAstrologer({required String text}) async {
-  //   print('text is: ${text}');
-  //   if (text.isNotEmpty) {
-  //     try {
-  //       await FirebaseFirestore.instance
-  //           .collection(
-  //               _astrologer_name) // Collection representing the user's messages
-  //           .doc(_gmail_uuid) // Document for this astrologer
-  //           .collection('messages') // Sub-collection for messages
-  //           .add({
-  //         'text': text,
-  //         'timestamp': FieldValue.serverTimestamp(),
-  //         'sender': 'astrologer',
-  //       });
-  //       print('Message sent from astrologer successfully.');
-  //       _textEditingController.clear(); // Clear the input field on success
-  //     } catch (e) {
-  //       print('Error sending message from astrologer: $e');
-  //       showDialog(
-  //         context: context,
-  //         builder: (BuildContext context) {
-  //           return AlertDialog(
-  //             title: Text('Error'),
-  //             content:
-  //                 Text('Failed to send astrologer message. Please try again.'),
-  //             actions: [
-  //               TextButton(
-  //                 onPressed: () => Navigator.pop(context),
-  //                 child: Text('OK'),
-  //               ),
-  //             ],
-  //           );
-  //         },
-  //       );
-  //     }
-  //   }
-  // }
+  void sendMessageFromAstrologer(
+      {required TextEditingController text_controller,
+      required BuildContext context}) async {
+    if (text_controller.text.isNotEmpty) {
+      try {
+        await FirebaseFirestore.instance
+            .collection(state
+                .astrologer_name) // Collection representing the user's messages
+            .doc(makeUserName(username: state.gmail)) // Document for this astrologer
+            .collection('messages') // Sub-collection for messages
+            .add({
+          'text': text_controller.text.toString(),
+          'timestamp': FieldValue.serverTimestamp(),
+          'sender': 'astrologer',
+        });
+        print('Message sent from astrologer successfully.');
+        text_controller.clear(); // Clear the input field on success
+      } catch (e) {
+        print('Error sending message from astrologer: $e');
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content:
+                  Text('Failed to send astrologer message. Please try again.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
+  }
 
   void sendMessage({required TextEditingController text_controller}) async {
     final text = text_controller.text.trim();
@@ -77,7 +84,13 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       await FirebaseFirestore.instance
           .collection(state.astrologer_name) // Astrologer's collection
-          .doc(state.gmail_uuid) // Document representing the user
+          .doc(makeUserName(username: state.gmail)) // Document representing the user
+          .set({'image': state.image_url},
+              SetOptions(merge: true));
+
+      await FirebaseFirestore.instance
+          .collection(state.astrologer_name) // Astrologer's collection
+          .doc(makeUserName(username: state.gmail)) // Document representing the user
           .collection('messages') // Sub-collection for messages
           .add({
         'text': text,
@@ -87,9 +100,14 @@ class ChatCubit extends Cubit<ChatState> {
 
       text_controller.clear(); // Clear the input field on success
     } catch (e) {
+      print('error: $e');
       // _showErrorDialog(
       //     'Failed to send message. Please try again.'); // Reusable error dialog
       // print('Error sending message: $e');
     }
+  }
+
+  String makeUserName({required String username}) {
+    return username.split('@').first;
   }
 }

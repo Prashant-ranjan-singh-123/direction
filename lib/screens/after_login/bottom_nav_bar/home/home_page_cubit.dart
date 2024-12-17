@@ -22,7 +22,7 @@ class HomePageCubit extends Cubit<HomePageState> {
 
     int _totalBalance;
     if ('IN' == await SharedPreferenceLogic.getCountryCode()) {
-      // await SharedPreferenceLogic.saveCounter(counter: 20000);
+      // await SharedPreferenceLogic.saveCounter(counter: 20);
       _totalBalance = await SharedPreferenceLogic.getCounter(isIn: true);
       emit(state.copyWith(isIndia: true, totalBalance: _totalBalance));
     } else {

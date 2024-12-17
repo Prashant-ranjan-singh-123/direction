@@ -60,8 +60,9 @@ class _ChatScreenState extends State<ChatScreen> {
                             stream: FirebaseFirestore.instance
                                 .collection(
                                     state.astrologer_name) // Main collection
-                                .doc(state
-                                    .gmail_uuid) // Specific document for the user
+                                .doc(cubit.makeUserName(
+                                    username: state
+                                        .gmail)) // Specific document for the user
                                 .collection(
                                     'messages') // Sub-collection for the user's messages
                                 .orderBy('timestamp',
@@ -133,6 +134,20 @@ class _ChatScreenState extends State<ChatScreen> {
                                       cubit.sendMessage(
                                           text_controller:
                                               _textEditingController);
+                                      // print('hello');
+                                      // _sendMessageFromAstrologer(
+                                      //     text: _textEditingController.text.toString());
+                                    }),
+                                IconButton(
+                                    icon: Icon(
+                                      Icons.send,
+                                      color: AppColor.black,
+                                    ),
+                                    onPressed: () {
+                                      cubit.sendMessageFromAstrologer(
+                                          text_controller:
+                                              _textEditingController,
+                                          context: context);
                                       // print('hello');
                                       // _sendMessageFromAstrologer(
                                       //     text: _textEditingController.text.toString());
