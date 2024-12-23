@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:direction/screens/before_login/login/login_cubit.dart';
 import 'package:direction/services/is_user_loged_in/login_check_cubit.dart';
 import 'package:direction/services/my_app_firebase_analytics/AnalyticsEngine.dart';
@@ -6,11 +8,11 @@ import 'package:direction/services/prashant_app_open_permission/prashant_app_ope
 // import 'package:direction/test_app.dart';
 import 'package:direction/utils/app_color.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
 import 'firebase_options.dart';
 import 'screens/after_login/bottom_nav_bar/profile/profile_page_after_login_cubit.dart';
 
@@ -20,10 +22,20 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  ZIMKit().init(
-    appID: 835939070, // your appid
-    appSign: 'a97fcf34bca5ccc4d49cc9efe64d2689a105345d1f5fcbf3df8feac4f75d9297',
-  );
+
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
+  // ZIMKit().init(
+  //   appID: 835939070, // your appid
+  //   appSign: 'a97fcf34bca5ccc4d49cc9efe64d2689a105345d1f5fcbf3df8feac4f75d9297',
+  // );
   runApp(AppStarter());
 }
 

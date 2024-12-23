@@ -4,8 +4,6 @@ import 'package:direction/screens/after_login/bottom_nav_bar/home/home_page_stat
 import 'package:direction/screens/after_login/bottom_nav_bar_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
-
 import '../../../../services/amplititude.dart';
 import '../../../../services/shared_preference.dart';
 import '../../../../utils/app_color.dart';
@@ -115,6 +113,9 @@ class HomePageCubit extends Cubit<HomePageState> {
   }
 
   void recharge_now({required BuildContext context}) {
+
+    // crash();
+
     MyAppAmplitudeAndFirebaseAnalitics.instanse()
         .logEvent(event: LogEventsName.instance().click_recharge_home_screen);
     print('its my page');
@@ -128,5 +129,9 @@ class HomePageCubit extends Cubit<HomePageState> {
         reverseTransitionDuration: Duration.zero,
       ),
     );
+  }
+
+  Never crash(){
+    return throw Exception();
   }
 }

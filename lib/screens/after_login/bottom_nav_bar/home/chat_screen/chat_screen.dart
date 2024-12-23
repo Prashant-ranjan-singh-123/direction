@@ -138,20 +138,20 @@ class _ChatScreenState extends State<ChatScreen> {
                                       // _sendMessageFromAstrologer(
                                       //     text: _textEditingController.text.toString());
                                     }),
-                                IconButton(
-                                    icon: Icon(
-                                      Icons.send,
-                                      color: AppColor.black,
-                                    ),
-                                    onPressed: () {
-                                      cubit.sendMessageFromAstrologer(
-                                          text_controller:
-                                              _textEditingController,
-                                          context: context);
-                                      // print('hello');
-                                      // _sendMessageFromAstrologer(
-                                      //     text: _textEditingController.text.toString());
-                                    }),
+                                // IconButton(
+                                //     icon: Icon(
+                                //       Icons.send,
+                                //       color: AppColor.black,
+                                //     ),
+                                //     onPressed: () {
+                                //       cubit.sendMessageFromAstrologer(
+                                //           text_controller:
+                                //               _textEditingController,
+                                //           context: context);
+                                //       // print('hello');
+                                //       // _sendMessageFromAstrologer(
+                                //       //     text: _textEditingController.text.toString());
+                                //     }),
                               ],
                             ),
                           ),
